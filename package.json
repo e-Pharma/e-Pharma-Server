@@ -1,0 +1,29 @@
+{
+  "name": "e-pharma-server",
+  "version": "1.0.0",
+  "description": "Online medicine delivery system",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SankhaJay/e-Pharma-Server.git"
+  },
+  "keywords": [
+    "medicine",
+    "pharmacy",
+    "online",
+    "delivery"
+  ],
+  "author": "Sankha Jayalath",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SankhaJay/e-Pharma-Server/issues"
+  },
+  "homepage": "https://github.com/SankhaJay/e-Pharma-Server#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.10"
+  }
+}
