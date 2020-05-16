@@ -5,6 +5,7 @@ const router = express.Router()
 
 const authRoutes = require("./auth")
 const adminRoutes = require("./admin")
+const emailRoutes = require("./email")
 
 router.get('/', function (req, res){
     console.log(__dirname)
@@ -15,5 +16,6 @@ router.get('/', function (req, res){
 
 router.use('/auth',authRoutes);
 router.use('/admin',adminRoutes);
+router.use('/email',emailRoutes);
 
 module.exports = router;

@@ -21,7 +21,7 @@ const clientSchema = mongoose.Schema({
     required: true
   },
   contact_number: {
-    type: String
+    type: String,
   },
   nic: {
     type: String
@@ -40,6 +40,10 @@ const clientSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  country: {
+    type: String,
+    default: "Sri Lanka"
+  }
 });
 
 module.exports = mongoose.model("Client", clientSchema);

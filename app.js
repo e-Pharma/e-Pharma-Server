@@ -16,8 +16,6 @@ app.use(bodyParser.json());
 app.set('views',path.join(__dirname,'views'));
 app.use("/",routes)
 
-
-
 app.listen(PORT,function(){
     console.log('Server started on port 3000')
 });

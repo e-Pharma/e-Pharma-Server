@@ -19,7 +19,7 @@ const Client = require("../models/client");
  * Return new user token
  * @param {string} email: new clients email
  * @param {string} password: new user's password
- * @return {string} 201: Toke
+ * @return {string} 201: Token
 **/
 exports.clientReg = async (req, res, next) => {
   Client.find({ email: req.body.email })
@@ -37,15 +37,14 @@ exports.clientReg = async (req, res, next) => {
             _id: new mongoose.Types.ObjectId(),
             email: req.body.email,
             password: hash,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            role: "user",
+            first_name: req.body.firstname,
+            last_name: req.body.lastname,
+            role: "client",
             permission_level:1,
-            contact_number: req.body.contact_number,
+            contact_number: req.body.contact,
             nic:req.body.nic,
             address:req.body.address,
-            avatar_url:""
-            
+            avatar_url:"",
             // Write image upload
           });
 
