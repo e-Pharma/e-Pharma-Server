@@ -4,6 +4,7 @@ const path = require('path')
 const router = express.Router()
 
 const authRoutes = require("./auth")
+const adminRoutes = require("./admin")
 
 router.get('/', function (req, res){
     console.log(__dirname)
@@ -12,6 +13,7 @@ router.get('/', function (req, res){
     //res.send("Welcome")
 });
 
-router.use('/auth',authRoutes)
+router.use('/auth',authRoutes);
+router.use('/admin',adminRoutes);
 
 module.exports = router;
