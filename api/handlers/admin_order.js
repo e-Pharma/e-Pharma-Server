@@ -13,7 +13,7 @@ exports.getOrders = async (req, res) => {
    var value = req.query.value;
     console.log(typeof value);
     console.log(value);
-    Order.find({[value]:false})
+    Order.find({status:value})
       .exec()
       .then(orders => {
         response(res, orders);
