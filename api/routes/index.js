@@ -6,6 +6,7 @@ const router = express.Router()
 const authRoutes = require("./auth")
 const adminRoutes = require("./admin")
 const emailRoutes = require("./email")
+const searchRoutes = require("./search")
 
 router.get('/', function (req, res){
     console.log(__dirname)
@@ -17,5 +18,6 @@ router.get('/', function (req, res){
 router.use('/auth',authRoutes);
 router.use('/admin',adminRoutes);
 router.use('/email',emailRoutes);
+router.use('/search/',searchRoutes);
 
 module.exports = router;
