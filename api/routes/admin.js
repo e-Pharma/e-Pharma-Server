@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const handler = require("../handlers/admin_order");
-
-const userHandler = require("../handlers/admin_user");
-
+const clientHandler = require('../handlers/admin_client');
 
 
 router.get("/orders", handler.getOrders);
 
-router.get("/users", userHandler.getUsers);
+router.get("/clients", clientHandler.getClients);
 
 
 module.exports = router;
