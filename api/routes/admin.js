@@ -7,7 +7,8 @@ const clientHandler = require('../handlers/admin_client');
 
 router.get("/orders", handler.getOrders);
 
-router.get("/clients", clientHandler.getClients);
+router.get("/verifiedClients", clientHandler.getVerifiedClients);
+router.get("/notVerifiedClients", clientHandler.getNotVerifiedClients);
 
 
 module.exports = router;
