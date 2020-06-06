@@ -28,3 +28,16 @@ exports.getNotVerifiedClients = (req,res)=>{
         }
     })
 }
+
+exports.getClient = (req,res)=>{
+    Client.findById(req.params.id,(err,data)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        else{
+            console.log(data);
+            res.send(data);
+        }
+    })
+}
