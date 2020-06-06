@@ -9,6 +9,6 @@ router.get("/orders", handler.getOrders);
 
 router.get("/verifiedClients", clientHandler.getVerifiedClients);
 router.get("/notVerifiedClients", clientHandler.getNotVerifiedClients);
-
+router.get("/client/:id", clientHandler.getClient);
 
 module.exports = router;

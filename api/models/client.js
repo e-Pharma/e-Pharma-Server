@@ -43,7 +43,30 @@ const clientSchema = mongoose.Schema({
   country: {
     type: String,
     default: "Sri Lanka"
-  }
+  },
+  relations:[{
+    nic:{
+      type:String
+    },
+    first_name:{
+      type:String
+    },
+    last_name:{
+      type:String
+    },
+    dob:{
+      type:Date
+    },
+    relationship:{
+      type:String
+    },
+    contact_number:{
+      type:String
+    },
+    gender:{
+      type:String
+    }
+  }]
 });
 
 module.exports = mongoose.model("Client", clientSchema);
