@@ -30,7 +30,8 @@ const clientSchema = mongoose.Schema({
     type: String
   },
   avatar_url: {
-    type: String
+    type: String,
+    default: "https://cdn0.iconfinder.com/data/icons/user-interface-vol-3-12/66/68-512.png"
   },
   is_verified: {
     type: Boolean,
