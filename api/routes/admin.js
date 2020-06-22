@@ -10,5 +10,6 @@ router.get("/orders", handler.getOrders);
 router.get("/verifiedClients", clientHandler.getVerifiedClients);
 router.get("/notVerifiedClients", clientHandler.getNotVerifiedClients);
 router.get("/client/:id", clientHandler.getClient);
+router.get("/clientOrders/:email", clientHandler.getClientOrders);
 
 module.exports = router;
