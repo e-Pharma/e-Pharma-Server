@@ -7,11 +7,17 @@ const orderSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  patient:{
+    type: String
+  },
   delivery_address: {
     type: String
   },
   prescription_url: {
-    type: String
+    type: [String]
+  },
+  non_prescription:{
+    type: [String]
   },
   is_reviewed: {
     type: Boolean,
@@ -39,9 +45,13 @@ const orderSchema = mongoose.Schema({
     2. is_paid => admin approved but client is yet to pay for it.
     3. is_dispatched => client paid for the order but package is yet to be dispatch from the store.
     4. is_delivered => packeage is dispatched but not yet received by the client.
-    5. is_completed => order is succesfully completed. client gets the package
+    5. completed => order is succesfully completed. client gets the package
     6. is_rejected => order is rejected by either admin or client any any stage.
   */
+ completed_on:{
+  type: Date,
+  required: false
+ },
   ordered_at: {
     type: Date,
     default: Date.now
