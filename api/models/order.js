@@ -14,10 +14,10 @@ const orderSchema = mongoose.Schema({
     type: String
   },
   lat: {
-    type: Double
+    type: Number
   },
   long: {
-    type: Double
+    type:Number
   },
   prescription_url: {
     type: [String]
