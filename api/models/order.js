@@ -13,6 +13,12 @@ const orderSchema = mongoose.Schema({
   delivery_address: {
     type: String
   },
+  lat: {
+    type: Double
+  },
+  long: {
+    type: Double
+  },
   prescription_url: {
     type: [String]
   },
