@@ -22,6 +22,31 @@ exports.getOrders = async (req, res) => {
       .catch(err => response(res, null, 500, err));
   };
 
+  exports.getOrder = async (req, res) => {
+
+    Order.findById(req.params.id,(err,data)=>{
+      if(err){
+          console.log(err);
+          return;
+      }
+      else{
+          console.log(data);
+          res.send(data);
+      }
+  });
+
+    // var value = req.query.value;
+    //  console.log(typeof value);
+    //  console.log(value);
+    //  Order.find({status:value})
+    //    .exec()
+    //    .then(orders => {
+    //      response(res, orders);
+    //      console.log(orders);
+    //    })
+    //    .catch(err => response(res, null, 500, err));
+   };
+
 
   // exports.getOrders = async (req, res) => {
   //   if (req && req.params && req.params.val) {

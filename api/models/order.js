@@ -41,7 +41,7 @@ const orderSchema = mongoose.Schema({
   },
   /*
     order has 4 stages
-    1. is_reviewed => client order yet  to be reviewed by the admin
+    1. is_reviewed => client order yet to be reviewed by the admin
     2. is_paid => admin approved but client is yet to pay for it.
     3. is_dispatched => client paid for the order but package is yet to be dispatch from the store.
     4. is_delivered => packeage is dispatched but not yet received by the client.

@@ -6,6 +6,7 @@ const clientHandler = require('../handlers/admin_client');
 
 
 router.get("/orders", handler.getOrders);
+router.get("/order/:id",handler.getOrder);
 
 router.get("/verifiedClients", clientHandler.getVerifiedClients);
 router.get("/notVerifiedClients", clientHandler.getNotVerifiedClients);
