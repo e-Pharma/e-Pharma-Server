@@ -8,7 +8,6 @@ exports.calculateImageQuality = async (req, res, next) => {
     const pythonProcess = spawn('python3', ['./image_clarity.py'])
     pythonProcess.stdout.on('data', (data) => {
         var buffer = Buffer.from(data)
-        console.log(buffer.toString())
         const brisqueValue = parseFloat(buffer.toString());
         console.log(brisqueValue)
         if(brisqueValue > 15) return response(res, {isQuality: true}, 200, "Success");
