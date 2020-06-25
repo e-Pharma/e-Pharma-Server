@@ -10,21 +10,32 @@ const orderSchema = mongoose.Schema({
   patient:{
     type: String
   },
+  contact: {
+    type: String,
+    required: true
+  },
+  note: {
+    type: String,
+    default: null
+  },
   delivery_address: {
     type: String
   },
   lat: {
-    type: Number
+    type: Number,
+    default: 0
   },
   long: {
-    type:Number
+    type:Number,
+    default: 0
   },
   prescription_url: {
-    type: [String]
+    type: String,
+    required: true
   },
-  non_prescription:{
-    type: [String]
-  },
+  // non_prescription:{
+  //   type: [String]
+  // },
   is_reviewed: {
     type: Boolean,
     default: false
