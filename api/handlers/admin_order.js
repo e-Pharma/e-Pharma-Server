@@ -35,6 +35,31 @@ exports.getOrders = async (req, res) => {
       }
   });
 
+  exports.addOrder = async (req, res) => {
+
+    const order = new Order({
+      _id: new mongoose.Types.ObjectId,
+      email: req.body.email,
+      patient: req.body.patient,
+      contact: req.body.contact,
+      delivery_address: req.body.address,
+      lat: req.body.lat,
+      long: req.body.long,
+      prescription_url: req.body.image,
+      note: req.body.note
+    });
+
+    order.save()
+         .then(result => {
+           logger.info("Sucess", result);
+           return response(res, result, 201, "Successfully Created!");
+         })
+         .catch(err => {
+           logger.error(err);
+           return response(res, null, 500, "Server Error!");
+         });
+  }
+
     // var value = req.query.value;
     //  console.log(typeof value);
     //  console.log(value);
