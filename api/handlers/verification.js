@@ -1,5 +1,4 @@
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const response = require("../utils/response");
 
@@ -7,6 +6,7 @@ const Logger = require("../utils/logger");
 const logger = new Logger();
 
 exports.sendVerification = async (req, res) => {
+    sgMail.setApiKey("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");
     const msg = {
         to: req.body.to,
         from: req.body.from,
