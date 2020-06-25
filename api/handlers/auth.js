@@ -22,6 +22,7 @@ const Client = require("../models/client");
  * @return {string} 201: Token
 **/
 exports.clientReg = async (req, res, next) => {
+  console.log(req.body)
   Client.find({ email: req.body.email })
     .exec()
     .then(client => {
@@ -80,11 +81,12 @@ exports.clientReg = async (req, res, next) => {
 };
 
 exports.clientLogin = async (req, res, next) => {
-  Client.find({ email: req.query.email })
+  Client.find({ email: req.body.email })
     .exec()
     .then(client => {
+      console.log(client)
       if (client.length < 1) return response(res, null, 401, "Auth Failed");
-      bcrypt.compare(req.query.password, client[0].password, (err, result) => {
+      bcrypt.compare(req.body.password, client[0].password, (err, result) => {
         if (err) {
           logger.error(err);
           return response(res, null, 401, "Auth Failed");
@@ -111,8 +113,19 @@ exports.clientLogin = async (req, res, next) => {
           }
         );
 
-        return response(res, {
-          token: token
+        Client.findOneAndUpdate({email: req.body.email}, {$set: {isLoggedIn: true}}, (err, result) => {
+          if(err) {
+            logger.error(err);
+            return response(res, null, 500, "Server Error");
+          } else {
+            var date = new Date().getTime();
+            date+=(1*60*60*1000)
+            logger.info("Success", result);
+            return response(res, {
+              token: token,
+              expireDate: date
+            });
+          }
         });
       });
     })
@@ -121,3 +134,15 @@ exports.clientLogin = async (req, res, next) => {
       return response(res, null, 500, err);
     });
 };
+
+exports.deleteAll = async(req, res) => {
+  Client.deleteMany({}, (err, result) => {
+    if(err) {
+      logger.error(err)
+      return response(res, null, 500, "Server Error")
+    } else {
+      logger.info("Success", result)
+      return response(res, null, 200, "Success")
+    }
+  })
+}

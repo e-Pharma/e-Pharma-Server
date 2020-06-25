@@ -41,6 +41,14 @@ const clientSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  account_status: {
+    type: String,
+    defaulf: "Active"
+  },
+  isLoggedIn: {
+    type: Boolean,
+    default: false
+  },
   country: {
     type: String,
     default: "Sri Lanka"
