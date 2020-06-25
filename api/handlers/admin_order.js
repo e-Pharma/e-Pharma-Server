@@ -33,7 +33,8 @@ exports.getOrders = async (req, res) => {
           console.log(data);
           res.send(data);
       }
-  });
+    });
+  }
 
   exports.addOrder = async (req, res) => {
 
@@ -70,7 +71,7 @@ exports.getOrders = async (req, res) => {
     //      console.log(orders);
     //    })
     //    .catch(err => response(res, null, 500, err));
-   };
+  
 
 
   // exports.getOrders = async (req, res) => {

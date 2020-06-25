@@ -7,6 +7,7 @@ const authRoutes = require("./auth")
 const adminRoutes = require("./admin")
 const emailRoutes = require("./email")
 const searchRoutes = require("./search")
+const imageRoutes = require("./image_upload")
 
 router.get('/', function (req, res){
     console.log(__dirname)
@@ -19,5 +20,6 @@ router.use('/auth',authRoutes);
 router.use('/admin',adminRoutes);
 router.use('/email',emailRoutes);
 router.use('/search/',searchRoutes);
+router.use('/image', imageRoutes);
 
 module.exports = router;
