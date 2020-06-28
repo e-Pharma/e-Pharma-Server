@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const jwtVerify = require("../handlers/verifyJWT")
 
 const data = require("../config/data");
 
@@ -145,4 +145,29 @@ exports.deleteAll = async(req, res) => {
       return response(res, null, 200, "Success")
     }
   })
+}
+
+exports.addRelationship = async (req, res) => {
+  console.log(req.headers['authorization'])
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  console.log(isVerified)
+  if (isVerified.isTrue) {
+    logger.info("Success", isVerified);
+        const clienId = isVerified.data.id;
+        console.log(clienId)
+        Client.findOneAndUpdate({_id: clienId}, {$set: {relations: req.body.relations}}, (err, result) => {
+          if(err) {
+            logger.error(err);
+            return response(res, null, 500, "Server Error");
+          } else {
+            logger.info("Success", result);
+            return response(res, null, 201, "Success");
+          }
+        });
+  } else {
+    logger.error("Invalid Token");
+    return response(res, null, 400, "Invalid Token");
+  }
+  // Client.findOneAndUpdate({_id: req})
 }
