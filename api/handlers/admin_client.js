@@ -14,7 +14,7 @@ exports.getVerifiedClients = (req,res)=>{
         }
         else{
             console.log(data);
-            return res.response(res, data, 200, "Success");
+            return response(res, data, 200, "Success");
             //res.end("Data retreived successfully");
         }
     })
