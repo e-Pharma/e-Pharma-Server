@@ -7,5 +7,6 @@ router.post("/login", handler.clientLogin);
 router.post("/register", handler.clientReg);
 router.delete("/delete", handler.deleteAll);
 router.post("/relationship/create", handler.addRelationship);
+router.get("/getData", handler.getData);
 
 module.exports = router;

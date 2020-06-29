@@ -18,6 +18,10 @@ const orderSchema = mongoose.Schema({
     type: String,
     default: null
   },
+  nic: {
+    type: String,
+    required: true
+  },
   delivery_address: {
     type: String
   },

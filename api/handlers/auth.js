@@ -135,6 +135,27 @@ exports.clientLogin = async (req, res, next) => {
     });
 };
 
+exports.getData = async(req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  console.log(isVerified)
+  if(isVerified.isTrue) {
+    const clienId = isVerified.data.id;
+    Client.findById(clienId, (err, client) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error!");
+      } else {
+        logger.info("Success", client);
+        return response(res, client, 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified);
+    return response(res, null, 400, "Token Error!");
+  }
+}
+
 exports.deleteAll = async(req, res) => {
   Client.deleteMany({}, (err, result) => {
     if(err) {
