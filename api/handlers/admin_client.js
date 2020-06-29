@@ -48,7 +48,7 @@ exports.getClient = (req,res)=>{
 }
 
 exports.getClientOrders = (req,res)=>{
-    order.find({"email":req.params.email},(err,data)=>{
+    Order.find({"email":req.params.email},(err,data)=>{
         if(err){
             console.log(err);
             return response(res, null, 500, "Server Error")
