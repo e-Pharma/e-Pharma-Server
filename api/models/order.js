@@ -34,12 +34,12 @@ const orderSchema = mongoose.Schema({
     default: 0
   },
   prescription_url: {
-    type: String,
+    type: [String],
     required: true
   },
-  // non_prescription:{
-  //   type: [String]
-  // },
+    non_prescription:{
+    type: [String]
+  },
   is_reviewed: {
     type: Boolean,
     default: false
