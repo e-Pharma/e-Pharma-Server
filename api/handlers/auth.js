@@ -156,6 +156,34 @@ exports.getData = async(req, res) => {
   }
 }
 
+exports.logOut = async (req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    const clienId = isVerified.data.id;
+    Client.findOneAndUpdate({email: isVerified.data.email }, { $set: req.body }, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null , 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue);
+    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 400, "Bad Request");
+      }
+    });
+  }
+}
+
 exports.verifyUser = async(req, res) => {
   const token = req.headers['authorization'].slice(6);
   const isVerified = jwtVerify.verifyJWT(token);
@@ -167,6 +195,17 @@ exports.verifyUser = async(req, res) => {
       } else {
         logger.info("Success", result);
         return response(res, null, 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue);
+    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 400, "Bad Request");
       }
     });
   }
@@ -203,8 +242,16 @@ exports.addRelationship = async (req, res) => {
           }
         });
   } else {
-    logger.error("Invalid Token");
-    return response(res, null, 400, "Invalid Token");
+    logger.error(isVerified.isTrue);
+    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 400, "Bad Request");
+      }
+    });
   }
   // Client.findOneAndUpdate({_id: req})
 }
