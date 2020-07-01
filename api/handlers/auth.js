@@ -81,7 +81,7 @@ exports.clientReg = async (req, res, next) => {
 };
 
 exports.clientLogin = async (req, res, next) => {
-  Client.find({ email: req.body.email })
+  Client.find({ email: req.body.email, is_verified: true })
     .exec()
     .then(client => {
       console.log(client)
@@ -135,6 +135,82 @@ exports.clientLogin = async (req, res, next) => {
     });
 };
 
+exports.getData = async(req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  console.log(isVerified)
+  if(isVerified.isTrue) {
+    const clienId = isVerified.data.id;
+    Client.findById(clienId, (err, client) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error!");
+      } else {
+        logger.info("Success", client);
+        return response(res, client, 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified);
+    return response(res, null, 400, "Token Error!");
+  }
+}
+
+exports.logOut = async (req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    const clienId = isVerified.data.id;
+    Client.findOneAndUpdate({email: isVerified.data.email }, { $set: req.body }, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null , 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue);
+    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 400, "Bad Request");
+      }
+    });
+  }
+}
+
+exports.verifyUser = async(req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    Client.findOneAndUpdate({_id: isVerified.data.id}, {$set: {is_verified: req.body.isVerified}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue);
+    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 400, "Bad Request");
+      }
+    });
+  }
+}
+
 exports.deleteAll = async(req, res) => {
   Client.deleteMany({}, (err, result) => {
     if(err) {
@@ -166,8 +242,16 @@ exports.addRelationship = async (req, res) => {
           }
         });
   } else {
-    logger.error("Invalid Token");
-    return response(res, null, 400, "Invalid Token");
+    logger.error(isVerified.isTrue);
+    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 400, "Bad Request");
+      }
+    });
   }
   // Client.findOneAndUpdate({_id: req})
 }

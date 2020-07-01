@@ -37,6 +37,10 @@ const clientSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
+  is_token_exired: {
+    type: Boolean,
+    default: false
+  },
   registered_at: {
     type: Date,
     default: Date.now

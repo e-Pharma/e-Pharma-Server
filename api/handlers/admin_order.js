@@ -41,13 +41,14 @@ exports.getOrders = async (req, res) => {
     const order = new Order({
       _id: new mongoose.Types.ObjectId,
       email: req.body.email,
-      patient: req.body.patient,
+      patient: req.body.first_name+ " "+req.body.last_name,
       contact: req.body.contact,
       delivery_address: req.body.address,
-      lat: req.body.lat,
-      long: req.body.long,
+      // lat: req.body.lat,
+      // long: req.body.long,
       prescription_url: req.body.image,
-      note: req.body.note
+      note: req.body.note,
+      nic: req.body.nic
     });
 
     order.save()
