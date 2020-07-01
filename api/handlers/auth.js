@@ -81,7 +81,7 @@ exports.clientReg = async (req, res, next) => {
 };
 
 exports.clientLogin = async (req, res, next) => {
-  Client.find({ email: req.body.email })
+  Client.find({ email: req.body.email, is_verified: true })
     .exec()
     .then(client => {
       console.log(client)
@@ -153,6 +153,22 @@ exports.getData = async(req, res) => {
   } else {
     logger.error(isVerified);
     return response(res, null, 400, "Token Error!");
+  }
+}
+
+exports.verifyUser = async(req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    Client.findOneAndUpdate({_id: isVerified.data.id}, {$set: {is_verified: req.body.isVerified}}, (err, result) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, "Server Error");
+      } else {
+        logger.info("Success", result);
+        return response(res, null, 200, "Success");
+      }
+    });
   }
 }
 
