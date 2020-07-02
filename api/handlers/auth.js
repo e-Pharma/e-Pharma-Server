@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT")
 
-const data = require("../config/data");
+const { env_data } = require("../config/data");
 
 const Logger = require("../utils/logger");
 const logger = new Logger();
@@ -59,7 +59,7 @@ exports.clientReg = async (req, res, next) => {
                   email: result.email,
                   first_name: result.first_name,
                 },
-                data.JWT_SECRET,
+                env_data.JWT_SECRET,
                 {
                   //expiresIn: "1h"
                 }
@@ -107,7 +107,7 @@ exports.clientLogin = async (req, res, next) => {
             email: client[0].email,
             first_name: client[0].first_name,
           },
-          data.JWT_SECRET,
+          env_data.JWT_SECRET,
           {
             //expiresIn: "1h"
           }

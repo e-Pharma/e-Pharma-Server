@@ -5,10 +5,11 @@ const path = require('path')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
-// const fileuploader = require('express-fileupload')
+const { export_params } = require('./api/config/s3_cofig')
 
 const PORT = process.env.PORT || 3000
 connedtDB()
+export_params.createBucket()
 
 app.use(cors())
 // app.use(fileuploader({createParentPath: true}))

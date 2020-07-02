@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-const env = require('../../api/config/data');
+const { env_data} = require('../../api/config/data');
 const Logger = require("../utils/logger");
 const logger = new Logger();
 
 exports.verifyJWT = function(token) {
-    const data = jwt.verify(token, env.JWT_SECRET);
+    const data = jwt.verify(token, env_data.JWT_SECRET);
     // console.log(data)
     try {
         if ( data !== undefined || data !== null)  {

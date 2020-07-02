@@ -8,21 +8,20 @@ const logger = new Logger();
 const response = require("../utils/response");
 
 const Order = require("../models/order");
+const OrderTemp = require("../models/order_temp");
+var orderArray = new Array();
 
 exports.getOrders = async (req, res) => {
-   var value = req.query.value;
-    console.log(typeof value);
-    console.log(value);
-    Order.find({status:value})
+    Order.find({})
       .exec()
       .then(orders => {
         response(res, orders);
         console.log(orders);
       })
       .catch(err => response(res, null, 500, err));
-  };
+};
 
-  exports.getOrder = async (req, res) => {
+exports.getOrder = async (req, res) => {
 
     Order.findById(req.params.id,(err,data)=>{
       if(err){
@@ -34,9 +33,33 @@ exports.getOrders = async (req, res) => {
           res.send(data);
       }
     });
-  }
+}
 
-  exports.addOrder = async (req, res) => {
+exports.deleteOrder = async (req, res) => {
+  Order.deleteMany({}, (err, result) => {
+    if(err) {
+      logger.error(err);
+      return response(res, null, 500, "Server Error");
+    } else {
+      logger.info("Success", result)
+      return response(res, null, 200, "Success");
+    }
+  })
+}
+
+exports.deleteOrderTemp = async (req, res) => {
+  OrderTemp.deleteMany({}, (err, result) => {
+    if(err) {
+      logger.error(err);
+      return response(res, null, 500, "Server Error");
+    } else {
+      logger.info("Success", result);
+      return response(res, null, 200, "Success");
+    }
+  });
+}
+
+exports.addOrder = async (req, res) => {
 
     const order = new Order({
       _id: new mongoose.Types.ObjectId,
@@ -53,14 +76,37 @@ exports.getOrders = async (req, res) => {
 
     order.save()
          .then(result => {
-           logger.info("Sucess", result);
-           return response(res, result, 201, "Successfully Created!");
+           OrderTemp.find({}, (err, orders) => {
+             if(err) {
+               logger.error(err);
+               return response(res, null, 500, "Server Error!");
+             } else {
+               logger.info("Success", orders);
+              //  console.log(orders);
+               orderArray = new Array(orders)
+               orderArray.push(result);
+               console.log(orderArray)
+             }
+           });
+           const order_temp = new OrderTemp({
+            _id: new mongoose.Types.ObjectId,
+             orders: orderArray
+           });
+
+           order_temp.save()
+                     .then(result => {
+                      logger.info("Sucess", result);
+                      return response(res, result, 201, "Successfully Created!");
+                     }).catch(err => {
+                      logger.error(err);
+                      return response(res, null, 500, "Server Error!");
+                     });
          })
          .catch(err => {
            logger.error(err);
            return response(res, null, 500, "Server Error!");
          });
-  }
+}
 
     // var value = req.query.value;
     //  console.log(typeof value);
