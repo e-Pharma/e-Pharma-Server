@@ -14,13 +14,23 @@ const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT")
 
 exports.getOrders = async (req, res) => {
-    Order.find({})
-      .exec()
-      .then(orders => {
-        response(res, orders);
-        console.log(orders);
-      })
-      .catch(err => response(res, null, 500, err));
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    const clientId = isVerified.data.id;
+    Order.find({ clientId: clientId}, (err, orders) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, err);
+      } else {
+        logger.info("Success", orders);
+        return response(res, orders, 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue);
+    return response(res, null, 400, "Bad Request");
+  }
 };
 
 exports.getOrder = async (req, res) => {
@@ -91,11 +101,13 @@ exports.addOrder = async (req, res) => {
   if(isVerified.isTrue) {
     const order = new Order({
       _id: new mongoose.Types.ObjectId,
+      clientId: isVerified.data.id,
       email: req.body.email,
       patient: req.body.first_name+ " "+req.body.last_name,
       contact: req.body.contact,
       delivery_address: req.body.address,
       dob: req.body.dob,
+      note: req.body.note,
       // lat: req.body.lat,
       // long: req.body.long,
       prescription_url: req.body.image,
