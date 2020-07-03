@@ -10,6 +10,8 @@ const response = require("../utils/response");
 const Order = require("../models/order");
 const OrderTemp = require("../models/order_temp");
 var orderArray = new Array();
+const jwt = require("jsonwebtoken");
+const jwtVerify = require("../handlers/verifyJWT")
 
 exports.getOrders = async (req, res) => {
     Order.find({})
@@ -33,6 +35,24 @@ exports.getOrder = async (req, res) => {
           res.send(data);
       }
     });
+}
+
+exports.getOrderTemp = async (req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    const clientId = isVerified.data.id;
+    OrderTemp.find({client_id: clientId})
+    .exec()
+    .then(orders => {
+      logger.info("Success", orders);
+      return response(res, orders, 200, "Success");
+    })
+    .catch(err => {
+      logger.error(err);
+      return response(res, null, 500, "Server Error");
+    });
+  }
 }
 
 exports.deleteOrder = async (req, res) => {
@@ -60,13 +80,16 @@ exports.deleteOrderTemp = async (req, res) => {
 }
 
 exports.addOrder = async (req, res) => {
-
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
     const order = new Order({
       _id: new mongoose.Types.ObjectId,
       email: req.body.email,
       patient: req.body.first_name+ " "+req.body.last_name,
       contact: req.body.contact,
       delivery_address: req.body.address,
+      dob: req.body.dob,
       // lat: req.body.lat,
       // long: req.body.long,
       prescription_url: req.body.image,
@@ -76,21 +99,10 @@ exports.addOrder = async (req, res) => {
 
     order.save()
          .then(result => {
-           OrderTemp.find({}, (err, orders) => {
-             if(err) {
-               logger.error(err);
-               return response(res, null, 500, "Server Error!");
-             } else {
-               logger.info("Success", orders);
-              //  console.log(orders);
-               orderArray = new Array(orders)
-               orderArray.push(result);
-               console.log(orderArray)
-             }
-           });
            const order_temp = new OrderTemp({
             _id: new mongoose.Types.ObjectId,
-             orders: orderArray
+            client_id: isVerified.data.id,
+            orders: result
            });
 
            order_temp.save()
@@ -106,6 +118,10 @@ exports.addOrder = async (req, res) => {
            logger.error(err);
            return response(res, null, 500, "Server Error!");
          });
+  } else {
+    logger.error(isVerified);
+    return response(res, null, 400, "Bad Request!");
+  }
 }
 
     // var value = req.query.value;

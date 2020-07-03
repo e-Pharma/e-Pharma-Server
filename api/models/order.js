@@ -14,6 +14,10 @@ const orderSchema = mongoose.Schema({
     type: String,
     default: null
   },
+  dob: {
+    type: Date,
+    required: true
+  },
   nic: {
     type: String,
     required: true
@@ -30,10 +34,10 @@ const orderSchema = mongoose.Schema({
     default: 0
   },
   prescription_url: {
-    type: [String],
+    type: String,
     required: true
   },
-    non_prescription:{
+  non_prescription:{
     type: [String]
   },
   is_reviewed: {
