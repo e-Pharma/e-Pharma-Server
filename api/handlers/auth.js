@@ -298,14 +298,26 @@ exports.addRelationship = async (req, res) => {
   if (isVerified.isTrue) {
     logger.info("Success", isVerified);
         const clienId = isVerified.data.id;
-        console.log(clienId)
-        Client.findOneAndUpdate({_id: clienId}, {$set: {relations: req.body.relations}}, (err, result) => {
+        console.log(clienId);
+        Client.findById(clienId,(err, client) => {
           if(err) {
             logger.error(err);
             return response(res, null, 500, "Server Error");
           } else {
-            logger.info("Success", result);
-            return response(res, null, 201, "Success");
+            var relationsArray = new Array();
+            console.log(client)
+            relationsArray = client.relations;
+            relationsArray.push(req.body.relations);
+            console.log(relationsArray)
+            Client.findOneAndUpdate({_id: clienId}, {$set: {relations: relationsArray}}, (err, result) => {
+              if(err) {
+                logger.error(err);
+                return response(res, null, 500, "Server Error");
+              } else {
+                logger.info("Success", result);
+                return response(res, null, 201, "Success");
+              }
+            });
           }
         });
   } else {

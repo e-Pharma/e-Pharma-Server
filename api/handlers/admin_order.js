@@ -24,17 +24,23 @@ exports.getOrders = async (req, res) => {
 };
 
 exports.getOrder = async (req, res) => {
-
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
     Order.findById(req.params.id,(err,data)=>{
       if(err){
           console.log(err);
-          return;
+          return response(res, null, 500, "Error");
       }
       else{
           console.log(data);
-          res.send(data);
+          return response(res, data, 200, "Success");
       }
     });
+  } else {
+    logger.error("Error");
+    return response(res, null, 400, "Bad Request");
+  }
 }
 
 exports.getOrderTemp = async (req, res) => {
@@ -99,20 +105,8 @@ exports.addOrder = async (req, res) => {
 
     order.save()
          .then(result => {
-           const order_temp = new OrderTemp({
-            _id: new mongoose.Types.ObjectId,
-            client_id: isVerified.data.id,
-            orders: result
-           });
-
-           order_temp.save()
-                     .then(result => {
-                      logger.info("Sucess", result);
-                      return response(res, result, 201, "Successfully Created!");
-                     }).catch(err => {
-                      logger.error(err);
-                      return response(res, null, 500, "Server Error!");
-                     });
+          logger.info("Sucess", result);
+          return response(res, result._id, 201, "Successfully Created!");
          })
          .catch(err => {
            logger.error(err);

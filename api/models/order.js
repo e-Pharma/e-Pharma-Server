@@ -58,8 +58,17 @@ const orderSchema = mongoose.Schema({
   },
   status:{
     type:String,
-    default:'is_reviewed' 
+    default:'pending' 
   },
+  /*
+   Status Types
+   1) pending
+   2) reviewed
+   3) completed
+   4) cancelled
+
+  */
+
   /*
     order has 4 stages
     1. is_reviewed => client order yet to be reviewed by the admin
