@@ -8,42 +8,94 @@ const logger = new Logger();
 const response = require("../utils/response");
 
 const Order = require("../models/order");
+const OrderTemp = require("../models/order_temp");
+var orderArray = new Array();
+const jwt = require("jsonwebtoken");
+const jwtVerify = require("../handlers/verifyJWT")
 
 exports.getOrders = async (req, res) => {
-   var value = req.query.value;
-    console.log(typeof value);
-    console.log(value);
-    Order.find({status:value})
+    Order.find({})
       .exec()
       .then(orders => {
         response(res, orders);
         console.log(orders);
       })
       .catch(err => response(res, null, 500, err));
-  };
+};
 
-  exports.getOrder = async (req, res) => {
-
+exports.getOrder = async (req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
     Order.findById(req.params.id,(err,data)=>{
       if(err){
           console.log(err);
-          return;
+          return response(res, null, 500, "Error");
       }
       else{
           console.log(data);
-          res.send(data);
+          return response(res, data, 200, "Success");
       }
     });
+  } else {
+    logger.error("Error");
+    return response(res, null, 400, "Bad Request");
   }
+}
 
-  exports.addOrder = async (req, res) => {
+exports.getOrderTemp = async (req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    const clientId = isVerified.data.id;
+    OrderTemp.find({client_id: clientId})
+    .exec()
+    .then(orders => {
+      logger.info("Success", orders);
+      return response(res, orders, 200, "Success");
+    })
+    .catch(err => {
+      logger.error(err);
+      return response(res, null, 500, "Server Error");
+    });
+  }
+}
 
+exports.deleteOrder = async (req, res) => {
+  Order.deleteMany({}, (err, result) => {
+    if(err) {
+      logger.error(err);
+      return response(res, null, 500, "Server Error");
+    } else {
+      logger.info("Success", result)
+      return response(res, null, 200, "Success");
+    }
+  })
+}
+
+exports.deleteOrderTemp = async (req, res) => {
+  OrderTemp.deleteMany({}, (err, result) => {
+    if(err) {
+      logger.error(err);
+      return response(res, null, 500, "Server Error");
+    } else {
+      logger.info("Success", result);
+      return response(res, null, 200, "Success");
+    }
+  });
+}
+
+exports.addOrder = async (req, res) => {
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
     const order = new Order({
       _id: new mongoose.Types.ObjectId,
       email: req.body.email,
       patient: req.body.first_name+ " "+req.body.last_name,
       contact: req.body.contact,
       delivery_address: req.body.address,
+      dob: req.body.dob,
       // lat: req.body.lat,
       // long: req.body.long,
       prescription_url: req.body.image,
@@ -53,14 +105,18 @@ exports.getOrders = async (req, res) => {
 
     order.save()
          .then(result => {
-           logger.info("Sucess", result);
-           return response(res, result, 201, "Successfully Created!");
+          logger.info("Sucess", result);
+          return response(res, result._id, 201, "Successfully Created!");
          })
          .catch(err => {
            logger.error(err);
            return response(res, null, 500, "Server Error!");
          });
+  } else {
+    logger.error(isVerified);
+    return response(res, null, 400, "Bad Request!");
   }
+}
 
     // var value = req.query.value;
     //  console.log(typeof value);
