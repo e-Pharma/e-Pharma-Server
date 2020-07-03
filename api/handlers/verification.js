@@ -36,8 +36,9 @@
 // }
 
 var mailgun = require("mailgun-js");
-var api_key = 'f65b98183b0819ec43b10ff8711ffe19-913a5827-fe6947d4';
-var DOMAIN = 'sandbox8ebab170abab4cccb7837bbc7a9952e5.mailgun.org';
+require('dotenv').config()
+var api_key = process.env.MAIL_GUN_API;
+var DOMAIN = process.env.MAIL_GUN_DOMAIN;
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: DOMAIN});
 const response = require("../utils/response");
 

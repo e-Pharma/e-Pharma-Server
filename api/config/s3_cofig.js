@@ -2,6 +2,7 @@
 var AWS = require('aws-sdk');
 const { env_data } = require('../../api/config/data');
 var STORAGE = env_data.storage
+require('dotenv').config()
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'SriLankanOrganics'})
 // console.log(credentials)
 // AWS.config.credentials = credentials;
@@ -12,8 +13,8 @@ var STORAGE = env_data.storage
 const s3 = new AWS.S3(
     {
         apiVersion: STORAGE.API_VERSION,
-        accessKeyId: 'AKIAJODDROGLCWRD5LQQ',
-        secretAccessKey: '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',
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY,
         region: STORAGE.REGION,
     }
 );
