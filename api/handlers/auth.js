@@ -61,7 +61,7 @@ exports.clientReg = async (req, res, next) => {
                 },
                 env_data.JWT_SECRET,
                 {
-                  //expiresIn: "1h"
+                  expiresIn: "1h"
                 }
               );
 
@@ -260,21 +260,26 @@ exports.verifyUser = async(req, res) => {
         logger.error(err);
         return response(res, null, 500, "Server Error");
       } else {
+        console.log(req.headers)
         logger.info("Success", result);
-        return response(res, null, 200, "Success");
+        if (result.is_verified === true) {
+          return response(res, null, 400, "Already Validated!");
+        } 
+        else return response(res, null, 200, "Success");
       }
     });
   } else {
     logger.error(isVerified.isTrue);
-    Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
-      if(err) {
-        logger.error(err);
-        return response(res, null, 500, "Server Error");
-      } else {
-        logger.info("Success", result);
-        return response(res, null, 400, "Bad Request");
-      }
-    });
+    return response(res, null, 400, "Token Expired");
+    // Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
+    //   if(err) {
+    //     logger.error(err);
+    //     return response(res, null, 500, "Server Error");
+    //   } else {
+    //     logger.info("Success", result);
+    //     return response(res, null, 400, "Bad Request");
+    //   }
+    // });
   }
 }
 

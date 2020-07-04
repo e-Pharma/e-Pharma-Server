@@ -7,6 +7,7 @@ exports.verifyJWT = function(token) {
     // console.log(data)
     try {
         const data = jwt.verify(token, env_data.JWT_SECRET);
+        console.log(data)
         if ( data !== undefined || data !== null)  {
             return {isTrue: true, data: data};
         } else {
