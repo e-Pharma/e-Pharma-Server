@@ -8,9 +8,9 @@ router.post("/register", handler.clientReg);
 router.delete("/delete", handler.deleteAll);
 router.post("/relationship/create", handler.addRelationship);
 router.get("/getData", handler.getData);
-// router.put("/verify_user", handler.verifyUser);
+router.put("/verify_user", handler.verifyUser);
 router.put("/logout", handler.logOut);
-// router.get("/password-reset-url/:email", handler.generatePasswordResetUrl);
-// router.put("/reset-password", handler.resetPassword);
+router.get("/password-reset-url/:email", handler.generatePasswordResetUrl);
+router.put("/reset-password", handler.resetPassword);
 
 module.exports = router;
