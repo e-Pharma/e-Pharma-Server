@@ -45,7 +45,7 @@ exports.clientReg = async (req, res, next) => {
             contact_number: req.body.contact,
             nic:req.body.nic,
             address:req.body.address,
-            avatar_url:"",
+            avatar_url:""
             // Write image upload
           });
 
