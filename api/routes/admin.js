@@ -4,9 +4,10 @@ const router = express.Router();
 const handler = require("../handlers/admin_order");
 const clientHandler = require('../handlers/admin_client');
 
-
-router.get("/order/get", handler.getOrders);
-router.get("/order/get/:value",handler.getOrder);
+router.get("/orders", handler.getOrders);
+router.get("/order/:id",handler.getOrder);
+// router.get("/order/get", handler.getOrders);
+// router.get("/order/get/:value",handler.getOrder);
 
 router.get("/verifiedClients", clientHandler.getVerifiedClients);
 router.get("/notVerifiedClients", clientHandler.getNotVerifiedClients);
