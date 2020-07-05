@@ -8,71 +8,52 @@ const logger = new Logger();
 const response = require("../utils/response");
 
 const Order = require("../models/order");
+const OrderTemp = require("../models/order_temp");
+var orderArray = new Array();
+const jwt = require("jsonwebtoken");
+const jwtVerify = require("../handlers/verifyJWT")
+
 
 exports.getOrders = async (req, res) => {
-   var value = req.query.value;
-    console.log(typeof value);
-    console.log(value);
-    Order.find({status:value})
-      .exec()
-      .then(orders => {
-        response(res, orders);
-        console.log(orders);
-      })
-      .catch(err => response(res, null, 500, err));
-  };
+  var value = req.query.value;
+   console.log(typeof value);
+   console.log(value);
+   Order.find({status:value})
+     .exec()
+     .then(orders => {
+       response(res, orders);
+       console.log(orders);
+     })
+     .catch(err => response(res, null, 500, err));
+ };
 
-  exports.getOrder = async (req, res) => {
+ exports.getOrder = async (req, res) => {
 
-    Order.findById(req.params.id,(err,data)=>{
-      if(err){
-          console.log(err);
-          return;
-      }
-      else{
-          console.log(data);
-          res.send(data);
-      }
-    });
-  }
+   Order.findById(req.params.id,(err,data)=>{
+     if(err){
+         console.log(err);
+         return;
+     }
+     else{
+         console.log(data);
+         res.send(data);
+     }
+ });
 
-  exports.addOrder = async (req, res) => {
+ }
 
-    const order = new Order({
-      _id: new mongoose.Types.ObjectId,
-      email: req.body.email,
-      patient: req.body.first_name+ " "+req.body.last_name,
-      contact: req.body.contact,
-      delivery_address: req.body.address,
-      // lat: req.body.lat,
-      // long: req.body.long,
-      prescription_url: req.body.image,
-      note: req.body.note,
-      nic: req.body.nic
-    });
-
-    order.save()
-         .then(result => {
-           logger.info("Sucess", result);
-           return response(res, result, 201, "Successfully Created!");
-         })
-         .catch(err => {
-           logger.error(err);
-           return response(res, null, 500, "Server Error!");
-         });
-  }
-
-    // var value = req.query.value;
-    //  console.log(typeof value);
-    //  console.log(value);
-    //  Order.find({status:value})
-    //    .exec()
-    //    .then(orders => {
-    //      response(res, orders);
-    //      console.log(orders);
-    //    })
-    //    .catch(err => response(res, null, 500, err));
-  
+  // exports.getOrder = async (req, res) => {
+  //   var value = req.query.value;
+  //   console.log(typeof value);
+  //   console.log(value);
+  //   Order.find({status:value})
+  //     .exec()
+  //     .then(orders => {
+  //       response(res, orders);
+  //       console.log(orders);
+  //     })
+  //     .catch(err => response(res, null, 500, err));
+  // }
 
 
   // exports.getOrders = async (req, res) => {
@@ -97,4 +78,4 @@ exports.getOrders = async (req, res) => {
   //   } else {
   //     response(res, null, 404, "No driver id found");
   //   }
-  // };
+  // }

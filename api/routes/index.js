@@ -8,12 +8,7 @@ const adminRoutes = require("./admin")
 const emailRoutes = require("./email")
 const searchRoutes = require("./search")
 const imageRoutes = require("./image_upload")
-const clientRoutes =require("./client")
-
-// router.get('/user',function(req,res,next){
-//     console.log("user");
-//     res.send("users")
-// })
+const clientRoutes = require("./client")
 
 router.get('/', function (req, res){
     console.log(__dirname)
@@ -21,7 +16,7 @@ router.get('/', function (req, res){
     res.sendFile(path.join(__dirname, '../../views', 'homepage.html'));
     //res.send("Welcome")
 
-    next()
+   
 });
 
 router.use('/auth',authRoutes);
@@ -29,5 +24,6 @@ router.use('/admin',adminRoutes);
 router.use('/email',emailRoutes);
 router.use('/search/',searchRoutes);
 router.use('/image', imageRoutes);
-router.use('/users',clientRoutes);
+router.use('/client', clientRoutes);
+
 module.exports = router;
