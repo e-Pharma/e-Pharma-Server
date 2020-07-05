@@ -10,6 +10,9 @@ const medicineSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  quantity:{
+    type: String,
+  },
   is_available: {
     type: Boolean,
     required: true
