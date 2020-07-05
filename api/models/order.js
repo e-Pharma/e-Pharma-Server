@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// const medicine = require("medicine");
 
 const orderSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
@@ -13,6 +14,15 @@ const orderSchema = mongoose.Schema({
   contact: {
     type: String,
     required: true
+  },
+  medicine_list:{
+    type: Array
+  },
+  delivery_charges:{
+    type:Number
+  },
+  full_amount:{
+    type:Number
   },
   note: {
     type: String,
