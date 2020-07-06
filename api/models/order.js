@@ -54,32 +54,35 @@ const orderSchema = mongoose.Schema({
   non_prescription:{
     type: [String]
   },
-  is_reviewed: {
-    type: Boolean,
-    default: false
-  },
-  is_paid: {
-    type: Boolean,
-    default: false
-  },
-  is_dispatched: {
-    type: Boolean,
-    default: false
-  },
-  is_delivered: {
-    type: Boolean,
-    default: false
-  },
+  // is_reviewed: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // is_paid: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // is_dispatched: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // is_delivered: {
+  //   type: Boolean,
+  //   default: false
+  // },
   status:{
     type:String,
     default:'pending' 
   },
   /*
    Status Types
-   1) pending
-   2) reviewed
-   3) completed
-   4) cancelled
+   1) pending - not reviewed
+   2) reviewed - not paid
+   3) paid - not dispached
+   4) dispached - nort delivered
+   5) delivered - no feedback
+   6) completed - delivered
+   7) rejected
 
   */
 
