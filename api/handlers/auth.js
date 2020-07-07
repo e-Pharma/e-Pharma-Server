@@ -81,18 +81,19 @@ exports.clientReg = async (req, res, next) => {
 };
 
 exports.clientLogin = async (req, res, next) => {
-  Client.find({ email: req.body.email, is_verified: true })
+  Client.find({ email: req.body.email})
     .exec()
     .then(client => {
       console.log(client)
-      if (client.length < 1) return response(res, null, 401, "Auth Failed");
+      if (client.length < 1) return response(res, null, 200, "User Not Exists");
+      else if(!client[0].is_verified) return response(res, null, 200, "Verifiy Email");
       bcrypt.compare(req.body.password, client[0].password, (err, result) => {
         if (err) {
           logger.error(err);
-          return response(res, null, 401, "Auth Failed");
+          return response(res, null, 200, "Auth Failed. Please Retry Again!");
         }
 
-        if (!result) return response(res, null, 401, "Auth Failed");
+        if (!result) return response(res, null, 200, "Invalid Credentials");
 
         logger.info(
           "User",
@@ -219,7 +220,7 @@ exports.resetPassword = async (req, res) => {
     });
   } else {
     logger.error(isVerified.isTrue);
-    return response(res, null, 400, "Bad Request!");
+    return response(res, null, 200, "Link Expired!");
   }
 }
 
@@ -263,14 +264,14 @@ exports.verifyUser = async(req, res) => {
         console.log(req.headers)
         logger.info("Success", result);
         if (result.is_verified === true) {
-          return response(res, null, 400, "Already Validated!");
+          return response(res, null, 200, "Already Validated!");
         } 
         else return response(res, null, 200, "Success");
       }
     });
   } else {
     logger.error(isVerified.isTrue);
-    return response(res, null, 400, "Token Expired");
+    return response(res, null, 200, "Token Expired");
     // Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
     //   if(err) {
     //     logger.error(err);
@@ -285,6 +286,18 @@ exports.verifyUser = async(req, res) => {
 
 exports.deleteAll = async(req, res) => {
   Client.deleteMany({}, (err, result) => {
+    if(err) {
+      logger.error(err)
+      return response(res, null, 500, "Server Error")
+    } else {
+      logger.info("Success", result)
+      return response(res, null, 200, "Success")
+    }
+  })
+}
+
+exports.delete = async(req, res) => {
+  Client.deleteMany({_id: req.params.id }, (err, result) => {
     if(err) {
       logger.error(err)
       return response(res, null, 500, "Server Error")
