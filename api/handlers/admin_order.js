@@ -56,7 +56,6 @@ exports.updateOrder = async (req, res, next) => {
             medicine_list: req.body.medicine_list,
             status: req.body.status
           };
-
           Order.updateOne({ _id: req.params.id }, updateDoc)
             .exec()
             .then(result => {

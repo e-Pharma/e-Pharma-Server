@@ -11,7 +11,7 @@ const Medicine = require('../models/medicine');
 
 exports.getMedicines = async (req, res) => {
     var value = req.query.value;
-     Medicine.find({},{name:1})
+     Medicine.find({},{})
        .exec()
        .then(medicines => {
          response(res, medicines);
