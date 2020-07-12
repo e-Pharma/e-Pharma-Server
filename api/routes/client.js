@@ -13,8 +13,9 @@ router.post("/order/create/non_prescription", handler.addNonPrscriptionOrder);
 
 
 router.get("/get/:id",clientHandler.getUser);
-router.get("/viewAddress/:id",addressHandler.getAddress)
-router.post("/addNewAddress/:id",addressHandler.addNewAddress)
-router.post("/edit/:id",clientHandler.editUser)
+router.post("/edit/:id",clientHandler.editUser);
+router.get("/viewAddress/:id",addressHandler.getAddress);
+router.post("/addNewAddress/:id",addressHandler.addNewAddress);
+router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
 
 module.exports = router;
