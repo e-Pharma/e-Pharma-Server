@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const response = require("../utils/response");
 
-const deliveryAddress = require('../models/delivery_address');
+const Address = require('../models/delivery_address');
 const Client =require('../models/client')
 const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT")
@@ -12,7 +12,7 @@ exports.getAddress=(req,res)=>{
     // const isVerified = jwtVerify.verifyJWT(token);
     // if(isVerified.isTrue) {
     //     const clientId = isVerified.data.id;
-        Client.find(req.params.id,(err,data)=>{
+    Address.findById(req.params.id,(err,data)=>{
             // {clientId:clientId}
             if(err){
                 console.log(err);
@@ -35,26 +35,35 @@ exports.addNewAddress=(req,res)=>{
     // const isVerified = jwtVerify.verifyJWT(token);
 
     // if(isVerified.isTrue){
-        const newData=new deliveryAddress({
-            _id:new mongoose.Types.ObjectId,
-            clientId:"5eff0dbb44376c5f074aaa63",
-            // isVerified.data.id,
-            type:req.body.type,
-            city:req.body.city,
-            address:req.body.address
-        });
-        newData.save()
-        .then(result=>{
-            console.log("New Address Addded Successfully");
-            return response(res,result._id,201,"New Address Addded Successfully")
+        Address.findById(req.params.id,(err,data)=>{
+            if(err){
+                
+
+            }
+            else{
+                const newData=new Address({
+                _id:new mongoose.Types.ObjectId,
+                clientId:req.params.id,
+                // isVerified.data.id,
+                type:req.body.type,
+                city:req.body.city,
+                address:req.body.address
+                });
+               
+                newData.save()
+                .then(result=>{
+                    console.log("New Address Addded Successfully");
+                    return response(res,result._id,201,"New Address Addded Successfully")
+                })
+                .catch(err=>{
+                    console.log(err);
+                    return response(res,null,500,"Error Occurred");
+                })
+            // }
+            // else{
+            //     return response(res, null, 400, "Bad Request!");
+            // }
+            }
         })
-        .catch(err=>{
-            console.log(err);
-            return response(res,null,500,"Error Occurred");
-        })
-    // }
-    // else{
-    //     return response(res, null, 400, "Bad Request!");
-    // }
 
 }
