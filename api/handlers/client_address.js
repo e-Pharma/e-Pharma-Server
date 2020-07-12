@@ -42,7 +42,8 @@ exports.addNewAddress=(req,res)=>{
             }
             else{
                 const newData=new Address({
-                _id:new mongoose.Types.ObjectId,
+                // _id:new mongoose.Types.ObjectId,
+                _id:req.params.id,
                 clientId:req.params.id,
                 // isVerified.data.id,
                 type:req.body.type,
@@ -66,4 +67,17 @@ exports.addNewAddress=(req,res)=>{
             }
         })
 
+}
+
+exports.deleteAddress=(req,res)=>{
+    const query={_id:req.params.id}
+    Address.deleteOne(query,(err,obj)=>{
+        if(err){
+            console.log(err);
+            return response(res,null,500,err);
+        }else{
+            console.log("Deleted Successfully");
+            return response(res, null, 200, "Success");
+        }
+    })
 }
