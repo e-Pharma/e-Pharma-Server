@@ -5,6 +5,7 @@ const router = express.Router()
 
 const authRoutes = require("./auth")
 const adminRoutes = require("./admin")
+const driverRoutes = require("./driver")
 const emailRoutes = require("./email")
 const searchRoutes = require("./search")
 const imageRoutes = require("./image_upload")
@@ -21,9 +22,11 @@ router.get('/', function (req, res){
 
 router.use('/auth',authRoutes);
 router.use('/admin',adminRoutes);
+router.use('/driver',driverRoutes);
 router.use('/email',emailRoutes);
 router.use('/search/',searchRoutes);
 router.use('/image', imageRoutes);
 router.use('/client', clientRoutes);
+
 
 module.exports = router;
