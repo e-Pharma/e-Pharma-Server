@@ -20,7 +20,7 @@ exports.getAddress=(req,res)=>{
             }
             else{
                 console.log(data);
-                return response(res, data.address, 200, "Success");
+                return response(res, data, 200, "Success");
             }
         })
     // }else {
@@ -66,7 +66,6 @@ exports.addNewAddress=(req,res)=>{
             // }
             }
         })
-
 }
 
 exports.deleteAddress=(req,res)=>{
