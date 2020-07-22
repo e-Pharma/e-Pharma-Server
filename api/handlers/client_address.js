@@ -20,7 +20,7 @@ exports.getAddress=(req,res)=>{
             }
             else{
                 console.log(data);
-                return response(res, data, 200, "Success");
+                return response(res, data.items, 200, "Success");
             }
         })
     // }else {
@@ -40,8 +40,13 @@ exports.addNewAddress=(req,res)=>{
     const docId=req.params.id;
     console.log(docId)
     //console.log(req.body.items)
+    var item=new Array();
+     console.log(req.body)
+
     Address.findByIdAndUpdate(docId,
-        {$push:{items:req.body.items}},
+        // {$push:{items:item}},
+        {$push:{items:req.body}},
+       
         {safe:true,upsert:true},
         function(err,doc){
             if(err){
@@ -51,7 +56,6 @@ exports.addNewAddress=(req,res)=>{
             }else{
                 console.log("Successfully added");
                 return response(res, null, 200, "Success");
-
             }
         }
         )
