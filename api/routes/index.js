@@ -10,6 +10,7 @@ const emailRoutes = require("./email")
 const searchRoutes = require("./search")
 const imageRoutes = require("./image_upload")
 const clientRoutes = require("./client")
+const { hasUncaughtExceptionCaptureCallback } = require('process')
 
 router.get('/', function (req, res){
     console.log(__dirname)
@@ -30,3 +31,4 @@ router.use('/client', clientRoutes);
 
 
 module.exports = router;
+//all starts from here
