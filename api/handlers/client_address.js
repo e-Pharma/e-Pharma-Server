@@ -20,7 +20,7 @@ exports.getAddress=(req,res)=>{
             }
             else{
                 console.log(data);
-                return response(res, data.address, 200, "Success");
+                return response(res, data.items, 200, "Success");
             }
         })
     // }else {
@@ -29,55 +29,53 @@ exports.getAddress=(req,res)=>{
     //   }
 }
 
-//add new address to the address book
+/*add new address to the address book*/
 exports.addNewAddress=(req,res)=>{
     // const token = req.headers['authorization'].slice(6);
     // const isVerified = jwtVerify.verifyJWT(token);
 
     // if(isVerified.isTrue){
-        Address.findById(req.params.id,(err,data)=>{
-            if(err){
-                
 
+/*find by ducument id and update and push item in array*/
+    const docId=req.params.id;
+    console.log(docId)
+    //console.log(req.body.items)
+    var item=new Array();
+     console.log(req.body)
+
+    Address.findByIdAndUpdate(docId,
+        // {$push:{items:item}},
+        {$push:{items:req.body}},
+       
+        {safe:true,upsert:true},
+        function(err,doc){
+            if(err){
+                console.log(err);
+                return response(res,null,500,err);
+
+            }else{
+                console.log("Successfully added");
+                return response(res, null, 200, "Success");
             }
-            else{
-                const newData=new Address({
-                // _id:new mongoose.Types.ObjectId,
-                _id:req.params.id,
-                clientId:req.params.id,
-                // isVerified.data.id,
-                type:req.body.type,
-                city:req.body.city,
-                address:req.body.address
-                });
-               
-                newData.save()
-                .then(result=>{
-                    console.log("New Address Addded Successfully");
-                    return response(res,result._id,201,"New Address Addded Successfully")
-                })
-                .catch(err=>{
-                    console.log(err);
-                    return response(res,null,500,"Error Occurred");
-                })
-            // }
-            // else{
-            //     return response(res, null, 400, "Bad Request!");
-            // }
-            }
-        })
+        }
+        )
 
 }
 
 exports.deleteAddress=(req,res)=>{
-    const query={_id:req.params.id}
-    Address.deleteOne(query,(err,obj)=>{
-        if(err){
-            console.log(err);
-            return response(res,null,500,err);
-        }else{
-            console.log("Deleted Successfully");
-            return response(res, null, 200, "Success");
+    const docId={_id:req.params.id}
+    Address.findByIdAndUpdate(docId,
+        {$pull:{items:req.body.items}},
+        {safe:true,upsert:true},
+        function(err,doc){
+            if(err){
+                console.log(err);
+                return response(res,null,500,err);
+
+            }else{
+                console.log("Deleted Successfully");
+                return response(res, null, 200, "Success");
+            }
         }
-    })
+    )
 }

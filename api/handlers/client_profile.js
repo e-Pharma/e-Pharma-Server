@@ -34,7 +34,7 @@ exports.editUser=async(req,res)=>{
                 .then(result=>{
                     if(result){
                         console.log("updated successfully");
-                        return response(res, null, 200, "Success");  
+                        return response(res, result, 200, "Success");  
                     }
                  })
                  .catch(err => response(res, null, 500, err));
