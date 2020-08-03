@@ -1,6 +1,10 @@
 const express = require('express');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const Driver = require('../models/driver');
 const response = require('../utils/response');
+const Logger = require("../utils/logger");
+const logger = new Logger();
 
 //view drivers (delivery persons)
 exports.viewDrivers=(req, res)=>{
@@ -17,14 +21,50 @@ exports.viewDrivers=(req, res)=>{
 }
 
 //add new driver (delivery person)
-exports.addNewDriver=(req, res)=>{
-    Driver.insert(req.body, (err,data)=>{
+exports.addDriver=async(req, res) => {
+    console.log(req.body);
+    bcrypt.hash(req.body.password, 10, (err,hash)=>{
+        if(err){
+            logger.error(err);
+            return response(res, null, 500, err);
+        }
+        else{
+            const driver = new Driver({
+                _id: new mongoose.Types.ObjectId,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                vehicleNumber: req.body.vehicleNumber,
+                user_name: req.body.username,
+                password: hash,
+                email: req.body.email,
+                phone: req.body.contactNumber,
+                address: req.body.address
+            });
+            console.log(driver.firstName);
+            driver.save()
+                .then(result => {
+                    logger.info("Sucess", result);
+                    return response(res, result._id, 201, "Successfully Created!");
+                })
+                .catch(err => {
+                    logger.error(err);
+                    return response(res, null, 500, "Server Error!");
+            });
+        }
+    });
+}
+
+//delete driver
+exports.deleteDriver = async(req,res)=>{
+    Driver.findByIdAndUpdate(req.params.id, {
+        isDeleted: true
+    }, (err,data)=>{
         if(err){
             console.log(err);
             return response(res, null, 500, "Server Error");
         }
         else{
-            res.json(data);
+            console.log(data);
             return response(res, data, 200, "Success");
         }
     })
