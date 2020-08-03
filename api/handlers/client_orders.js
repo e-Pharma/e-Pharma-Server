@@ -164,3 +164,28 @@ exports.addNonPrscriptionOrder = async (req, res) => {
     return response(res, null, 200, "Invalid Token!");
   }
 }
+
+exports.getNotifications = async (req, res) => {
+  console.log(req.headers['authorization'])
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  console.log(isVerified)
+  if (isVerified.isTrue) {
+    logger.info("Success", isVerified);
+        const clientId = isVerified.data.id;
+        const email = isVerified.data.email
+        console.log(clientId);
+        Order.find({clientId: clientId, email: email, status: 'reviewed'}, (err, order) => {
+          if(err) {
+            logger.error(err);
+            return response(res, null, 500, "Server Error")
+          } else {
+            logger.info("Success", order)
+            return response(res, null, 200, "Success")
+          }
+        });
+  } else {
+    logger.error(isVerified.isTrue);
+    return response(res, null, 400, "Bad Request");
+  }
+}
