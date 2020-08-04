@@ -10,6 +10,9 @@ router.get("/order/get/:id",handler.getOrder);
 router.post("/order/create", handler.addOrder);
 router.delete("/order/delete", handler.deleteOrder);
 router.post("/order/create/non_prescription", handler.addNonPrscriptionOrder);
+router.get('/order/get_notifications', handler.getNotifications);
+router.put('/order/cancel_order/:id', handler.cancelOrder);
+router.put('/order/pay_order/:id', handler.payOrder);
 
 
 router.get("/get/:id",clientHandler.getUser);

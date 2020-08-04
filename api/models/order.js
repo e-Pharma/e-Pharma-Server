@@ -37,7 +37,8 @@ const orderSchema = mongoose.Schema({
     required: true
   },
   delivery_address: {
-    type: String
+    type: String,
+    required: true
   },
   lat: {
     type: Number,
@@ -49,10 +50,11 @@ const orderSchema = mongoose.Schema({
   },
   prescription_url: {
     type: String,
-    required: true
+    defaul: null,
   },
   non_prescription:{
-    type: [String]
+    type: [String],
+    default: []
   },
   // is_reviewed: {
   //   type: Boolean,
