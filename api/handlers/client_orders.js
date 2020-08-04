@@ -166,7 +166,7 @@ exports.addNonPrscriptionOrder = async (req, res) => {
 }
 
 exports.getNotifications = async (req, res) => {
-  console.log(req.headers['authorization'])
+  console.log(req.headers)
   const token = req.headers['authorization'].slice(6);
   const isVerified = jwtVerify.verifyJWT(token);
   console.log(isVerified)
@@ -181,11 +181,53 @@ exports.getNotifications = async (req, res) => {
             return response(res, null, 500, "Server Error")
           } else {
             logger.info("Success", order)
-            return response(res, null, 200, "Success")
+            return response(res, {list: order, count: order.length}, 200, "Success")
           }
         });
   } else {
     logger.error(isVerified.isTrue);
     return response(res, null, 400, "Bad Request");
+  }
+}
+
+exports.cancelOrder = async (req, res) => {
+  console.log(req.headers)
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  console.log(isVerified)
+  if (isVerified.isTrue) {
+    Order.findByIdAndUpdate(req.params.id, { $set: { status: 'rejected'}}, (err, order) => {
+      if (err) {
+        logger.error(err)
+        return response(res, null, 500, "Server Error")
+      } else {
+        logger.info("Success", order)
+        return response(res, null, 200, "Success")
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue)
+    return response(res, null, 200, "Invalid Token")
+  }
+}
+
+exports.payOrder = async (req, res) => {
+  console.log(req.headers)
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  console.log(isVerified)
+  if (isVerified.isTrue) {
+    Order.findByIdAndUpdate(req.params.id, { $set: { status: req.body.status }}, (err, order) => {
+      if (err) {
+        logger.error(err)
+        return response(res, null, 500, "Server Error")
+      } else {
+        logger.info("Success", order)
+        return response(res, null, 200, "Success")
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue)
+    return response(res, null, 200, "Invalid Token")
   }
 }
