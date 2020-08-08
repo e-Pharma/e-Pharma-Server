@@ -12,6 +12,7 @@ const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT")
 
 exports.getOrders = async (req, res) => {
+
     Order.find({}, (err, orders) => {
         if(err) {
           logger.error(err);
