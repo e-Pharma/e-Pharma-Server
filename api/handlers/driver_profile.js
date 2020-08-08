@@ -56,19 +56,31 @@ exports.editDriver=async(req,res)=>{
     }
 }
 
+// exports.getOrders = async (req, res) => {
+
+//     Order.find({status:"pending"}, (err, orders) => {
+//         if(err) {
+//           logger.error(err);
+//           return response(res, null, 500, err);
+//         } else {
+//           console.log(orders);
+//           logger.info("Success", orders);
+//           return response(res, orders, 200, "Success");
+//         }
+//       });
+
+// };
+
 exports.getOrders = async (req, res) => {
-
-    Order.find({status:"pending"}, (err, orders) => {
-        if(err) {
-          logger.error(err);
-          return response(res, null, 500, err);
-        } else {
-          console.log(orders);
-          logger.info("Success", orders);
-          return response(res, orders, 200, "Success");
-        }
-      });
-
+    var value = req.query.value;
+    console.log(typeof value);
+    console.log(value);
+    Order.find({ status: "pending" })
+      .exec()
+      .then(orders => {
+        response(res, orders);
+        console.log(orders);
+      })
+      .catch(err => response(res, null, 500, err));
 };
-
 
