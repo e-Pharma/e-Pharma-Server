@@ -1,6 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Driver = require('../models/driver');
+const Order = require("../models/order");
+const Logger = require("../utils/logger");
+
+const logger = new Logger();
+
+
 
 const response = require("../utils/response");
 const driver = require("../models/driver");  
@@ -50,6 +56,19 @@ exports.editDriver=async(req,res)=>{
     }
 }
 
+exports.getOrders = async (req, res) => {
 
+    Order.find({status:"pending"}, (err, orders) => {
+        if(err) {
+          logger.error(err);
+          return response(res, null, 500, err);
+        } else {
+          console.log(orders);
+          logger.info("Success", orders);
+          return response(res, orders, 200, "Success");
+        }
+      });
+
+};
 
 
