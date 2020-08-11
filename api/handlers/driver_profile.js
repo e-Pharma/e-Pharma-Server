@@ -6,8 +6,6 @@ const Logger = require("../utils/logger");
 
 const logger = new Logger();
 
-
-
 const response = require("../utils/response");
 const driver = require("../models/driver");  
 
@@ -71,7 +69,8 @@ exports.editDriver=async(req,res)=>{
 
 // };
 
-exports.getOrders = async (req, res) => {
+//retrieve pending orders
+exports.getPendingOrders = async (req, res) => {
     var value = req.query.value;
     console.log(typeof value);
     console.log(value);
@@ -84,3 +83,16 @@ exports.getOrders = async (req, res) => {
       .catch(err => response(res, null, 500, err));
 };
 
+//retrieve ongoing orders
+exports.getOngoingOrders = async (req, res) => {
+    var value = req.query.value;
+    console.log(typeof value);
+    console.log(value);
+    Order.find({ status: "ongoing" })
+      .exec()
+      .then(orders => {
+        response(res, orders);
+        console.log(orders);
+      })
+      .catch(err => response(res, null, 500, err));
+};
