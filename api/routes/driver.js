@@ -9,7 +9,9 @@ router.get("/login",driverLogin.login);
 //driver details
 router.get("/get/:id", driverProfileHandler.getDriver);
 //order details - pending
-router.get("/orders", driverProfileHandler.getOrders);
+router.get("/pendingOrders", driverProfileHandler.getPendingOrders);
+//order details - ongoing
+router.get("/ongoingOrders", driverProfileHandler.getOngoingOrders);
 
 //edit driver details
 router.post("/edit/:id", driverProfileHandler.editDriver);
