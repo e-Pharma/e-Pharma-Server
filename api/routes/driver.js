@@ -16,6 +16,9 @@ router.get("/ongoingOrders", driverProfileHandler.getOngoingOrders);
 //edit driver details
 router.post("/edit/:id", driverProfileHandler.editDriver);
 
+//update the order status
+router.post("/updateOrderStatus/:id", driverProfileHandler.editOrderStatus);
+
 
 
 module.exports = router;
