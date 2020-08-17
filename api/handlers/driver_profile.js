@@ -96,3 +96,34 @@ exports.getOngoingOrders = async (req, res) => {
       })
       .catch(err => response(res, null, 500, err));
 };
+
+//update the pending order status
+exports.editOrderStatus=async(req,res)=>{
+    if(req && req.params && req.params.id){
+        console.log(req.body.status)
+    Order.findOne({_id:req.params.id})
+        .exec()
+        .then(order=>{
+            if(order){
+                const editFields={
+                    status:req.body.status,
+
+                }
+                Order.updateOne({_id:req.params.id},editFields)
+                    .exec()
+                    .then(result=>{
+                        if(result){
+                            console.log("status changed");
+                            return response(res, result, 202, "Success");  
+                        }
+                     })
+                     .catch(err => response(res, null, 500, err));
+            }else{
+                response(res, null, 404, "Invalid order id");
+            }
+           
+        }).catch(err=>response(res,null,500,err));
+    }else{
+        return response(res,null,400,"Order not available")
+    }
+}
