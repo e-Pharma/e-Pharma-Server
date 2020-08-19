@@ -12,6 +12,8 @@ router.get("/get/:id", driverProfileHandler.getDriver);
 router.get("/pendingOrders", driverProfileHandler.getPendingOrders);
 //order details - ongoing
 router.get("/ongoingOrders", driverProfileHandler.getOngoingOrders);
+//order details - completed
+router.get("/completedOrders", driverProfileHandler.getCompletedOrders);
 
 //edit driver details
 router.post("/edit/:id", driverProfileHandler.editDriver);
