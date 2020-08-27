@@ -24,6 +24,7 @@ router.get("/clientOrders/:email", clientHandler.getClientOrders);
 router.get("/drivers", driverHandler.viewDrivers);
 router.post("/addDriver", driverHandler.addDriver);
 router.put("/deleteDriver/:id", driverHandler.deleteDriver); //set isDeleted=true
+router.put("/updateDriverLatLong/:id", driverHandler.updateDriverLatLong); //temporary
 
 module.exports = router;
    
