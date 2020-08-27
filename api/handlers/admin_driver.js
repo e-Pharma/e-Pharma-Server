@@ -69,3 +69,23 @@ exports.deleteDriver = async(req,res)=>{
         }
     })
 }
+
+
+//temporary update driver (for admin client tracker testing)
+exports.updateDriverLatLong = async(req, res)=>{
+    const io = req.app.get('io'); //This line must go into the driver's location (lat and long) update function
+    Driver.findByIdAndUpdate(req.params.id, {
+        lat: req.body.lat,
+        long: req.body.long
+    },(err,data)=>{
+        if(err){
+            console.log(err);
+            return response(res, null, 500, "Server Error");
+        }
+        else{
+            io.emit('locationUpdated'); //This line must go into the driver's location (lat and long) update function
+            console.log(data);
+            return response(res, data, 200, "Success");
+        }
+    })
+}
