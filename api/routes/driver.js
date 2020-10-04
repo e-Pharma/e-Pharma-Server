@@ -2,12 +2,15 @@ const express = require("express");
 const router = express.Router();
 
 const driverLogin = require("../handlers/driver_auth")
+const driverNotificationHandler = require("../handlers/driver_notification")
 const driverProfileHandler = require("../handlers/driver_profile")
 const clientOrdersHandler = require("../handlers/client_orders")
 
 router.get("/login",driverLogin.login);
 //driver details
 router.get("/get/:id", driverProfileHandler.getDriver);
+//notifications to driver 
+router.get("/notifications", driverNotificationHandler.getNotifications);
 //order details - pending
 router.get("/pendingOrders", driverProfileHandler.getPendingOrders);
 //order details - ongoing
