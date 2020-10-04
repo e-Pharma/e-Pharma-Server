@@ -10,7 +10,7 @@ router.get("/login",driverLogin.login);
 //driver details
 router.get("/get/:id", driverProfileHandler.getDriver);
 //notifications to driver 
-router.get("/notifications", driverNotificationHandler.getNotifications);
+router.get("/notifications", driverNotificationHandler.viewNotifications);
 //order details - pending
 router.get("/pendingOrders", driverProfileHandler.getPendingOrders);
 //order details - ongoing
