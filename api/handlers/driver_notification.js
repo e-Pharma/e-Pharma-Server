@@ -12,8 +12,8 @@ const response = require("../utils/response");
 const Notification = require("../models/notification");
 
 //get notification details
-exports.getNotifications=(req,res)=>{
-    Notification.findById(req.params.id,(err,data)=>{
+exports.viewNotifications=(req,res)=>{
+    Notification.find({isDeleted:false}, (err,data)=>{
         if(err){
             console.log(err);
             return response(res, null, 500, "Server Error");
