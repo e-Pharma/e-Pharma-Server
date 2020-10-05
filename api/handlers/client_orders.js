@@ -117,7 +117,7 @@ exports.addOrder = async (req, res) => {
           });
     }
 
-    notification = new Notification({
+    var notification = new Notification({
       _id: new mongoose.Types.ObjectId,
       name: req.body.first_name+ " "+req.body.last_name,
       action: "placed an order at "
