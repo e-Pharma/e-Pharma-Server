@@ -6,12 +6,14 @@ const clientHandler = require('../handlers/admin_client');
 const adminLogin = require("../handlers/admin_auth");
 const driverHandler = require('../handlers/admin_driver');
 
+//ADMIN ORDER
 router.get("/orders", handler.getOrders);
 router.get("/order/:id",handler.getOrder);
 // router.get("/order/get", handler.getOrders);
 // router.get("/order/get/:value",handler.getOrder);
 router.post("/updateOrder/:id",handler.updateOrder);
 
+//ADMIN LOGIN
 router.get("/login",adminLogin.login);
 
 //ADMIN CLIENT
@@ -25,6 +27,6 @@ router.get("/drivers", driverHandler.viewDrivers);
 router.post("/addDriver", driverHandler.addDriver);
 router.put("/deleteDriver/:id", driverHandler.deleteDriver); //set isDeleted=true
 router.put("/updateDriverLatLong/:id", driverHandler.updateDriverLatLong); //temporary
+router.get("/orderHistory/:id", driverHandler.orderHistory);
 
 module.exports = router;
-   
