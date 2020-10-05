@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.env_data = {
     MONGO_DB:
       "mongodb+srv://sankhaJ:sankha@appledore-nbptw.mongodb.net/e-Pharma?retryWrites=true&w=majority",
     JWT_SECRET: "secret",
