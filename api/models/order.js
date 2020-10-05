@@ -105,6 +105,10 @@ const orderSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  feedback:{
+    type:String,
+    default:null
+  }
 });
 
 module.exports = mongoose.model("Order", orderSchema);

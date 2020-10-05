@@ -15,13 +15,15 @@ router.post("/order/create/non_prescription", handler.addNonPrscriptionOrder);
 router.get('/order/get_notifications', handler.getNotifications);
 router.put('/order/cancel_order/:id', handler.cancelOrder);
 router.put('/order/pay_order/:id', handler.payOrder);
+// router.post("/order/feedback/:id",handler.orderFeedback);
 
 router.get("/get/:id",clientHandler.getUser);
 router.post("/edit/:id",clientHandler.editUser);
 router.get("/get/address/:id",addressHandler.getAddress);
 router.post("/addNewAddress/:id",addressHandler.addNewAddress);
-// router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
+//router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
 router.get("/get/order/:id",trackOrder.getOrder);
 router.get("/get/driver/:id",driver.getDriver); // for the order-tracking 
+router.post("feedback/:id",handler.orderFeedback);
 
 module.exports = router;

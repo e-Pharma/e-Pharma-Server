@@ -33,20 +33,18 @@ exports.getAddress=(req,res)=>{
 exports.addNewAddress=(req,res)=>{
     // const token = req.headers['authorization'].slice(6);
     // const isVerified = jwtVerify.verifyJWT(token);
-
     // if(isVerified.isTrue){
 
 /*find by ducument id and update and push item in array*/
     const docId=req.params.id;
     console.log(docId)
     //console.log(req.body.items)
-    var item=new Array();
+    var item = new Array();
      console.log(req.body)
 
     Address.findByIdAndUpdate(docId,
         // {$push:{items:item}},
         {$push:{items:req.body}},
-       
         {safe:true,upsert:true},
         function(err,doc){
             if(err){
