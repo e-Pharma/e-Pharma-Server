@@ -29,6 +29,29 @@ exports.getAddress=(req,res)=>{
     //   }
 }
 
+exports.getAllAddresses = (req, res) => {
+    const token = req.headers['authorization'].slice(6);
+    const isVerified = jwtVerify.verifyJWT(token);
+    if(isVerified.isTrue) {
+        const clientId = isVerified.data.id;
+        console.log("CLIENT:"+clientId)
+        Address.find({ clientId: clientId },(err,data)=>{
+            console.log("ERROR:"+data)
+            if(err){
+                console.log(err);
+                return response(res,null,500,err);
+            }
+            else{
+                console.log(data);
+                return response(res, data.items, 200, "Success");
+            }
+        });
+    }else {
+        logger.error(isVerified.isTrue);
+        return response(res, null, 400, "Bad Request");
+  }
+}
+
 /*add new address to the address book*/
 exports.addNewAddress=(req,res)=>{
     // const token = req.headers['authorization'].slice(6);
