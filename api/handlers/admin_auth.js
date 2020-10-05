@@ -40,14 +40,14 @@ exports.login = async (req, res, next) => {
           );
           const token = jwt.sign(
             {
-                
               id: admin[0]._id,
               adminID: admin[0].user_name,
               pos:"admin",
               first_name: admin[0].user_name,
               role: 1
             },
-            data.JWT_SECRET,
+            // data.JWT_SECRET,
+            process.env.JWT_SECRET,
             {
 
             //   expiresIn: "1h"
@@ -63,4 +63,4 @@ exports.login = async (req, res, next) => {
         logger.error(err);
         return response(res, null, 500, err);
       });
-  };
+  }; 

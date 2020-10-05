@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Driver = require('../models/driver');
+const Order = require('../models/order');
 const response = require('../utils/response');
 const Logger = require("../utils/logger");
 const logger = new Logger();
@@ -64,6 +65,40 @@ exports.deleteDriver = async(req,res)=>{
             return response(res, null, 500, "Server Error");
         }
         else{
+            console.log(data);
+            return response(res, data, 200, "Success");
+        }
+    })
+}
+
+//get delivered orders
+exports.orderHistory = (req,res)=>{
+    Order.find({"driver":req.params.id}, (err,data)=>{
+        if(err){
+            console.log(err);
+            return response(res, null, 500, "Server Error");
+        }
+        else{
+            console.log(data);
+            return response(res, data, 200, "Success");
+        }
+    })
+}
+
+
+//temporary update driver (for admin client tracker testing)
+exports.updateDriverLatLong = async(req, res)=>{
+    const io = req.app.get('io'); //This line must go into the driver's location (lat and long) update function
+    Driver.findByIdAndUpdate(req.params.id, {
+        lat: req.body.lat,
+        long: req.body.long
+    },(err,data)=>{
+        if(err){
+            console.log(err);
+            return response(res, null, 500, "Server Error");
+        }
+        else{
+            io.emit('locationUpdated'); //This line must go into the driver's location (lat and long) update function
             console.log(data);
             return response(res, data, 200, "Success");
         }

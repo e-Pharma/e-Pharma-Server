@@ -80,11 +80,20 @@ const orderSchema = mongoose.Schema({
    Status Types
    1) pending - not reviewed
    2) reviewed - not paid
+<<<<<<< Updated upstream
    3) paid - not dispached
-   4) dispached - nort delivered
+   4) dispatched - nort delivered
    5) delivered - no feedback
    6) completed - delivered
    7) rejected
+=======
+   3) paid - not driverAssigned
+   4) driverAssigned - not dispatched
+   5) dispached - not delivered
+   6) delivered - delivery completed
+   7) feedback - feedback on progress
+   8) rejected
+>>>>>>> Stashed changes
 
   */
 
@@ -105,6 +114,10 @@ const orderSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  driver:{
+    type:String,
+    required: false
+  }
 });
 
 module.exports = mongoose.model("Order", orderSchema);

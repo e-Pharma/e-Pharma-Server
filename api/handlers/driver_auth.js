@@ -47,7 +47,7 @@ exports.login = async (req, res, next) => {
               first_name: driver[0].user_name,
               role: 1
             },
-            data.JWT_SECRET,
+            process.env.JWT_SECRET,
             {
 
             //   expiresIn: "1h"

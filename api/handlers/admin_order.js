@@ -12,6 +12,17 @@ const OrderTemp = require("../models/order_temp");
 var orderArray = new Array();
 const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT")
+const mg = require("../api keys/mailgun")
+
+// import { mailgun } from '../api keys/mailgun'
+
+var api_key = mg.api_key;
+var domain = mg.domain;
+// console.log(mg.api_key)
+  
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
+
 
 
 exports.getOrders = async (req, res) => {
@@ -28,6 +39,9 @@ exports.getOrders = async (req, res) => {
 };
 
 exports.getOrder = async (req, res) => {
+  mailgun.messages().send(data, function (error, body) {
+    console.log(body);
+  });
 
   Order.findById(req.params.id, (err, data) => {
     if (err) {
@@ -59,6 +73,24 @@ exports.updateOrder = async (req, res, next) => {
           Order.updateOne({ _id: req.params.id }, updateDoc)
             .exec()
             .then(result => {
+             var price = req.body.full_amount-req.body.delivery_charges
+              var mailData = {
+                from: 'E-Pharma <admin@e-Pharma.org>',
+                to: 'sankha.rc@gmail.com',
+                subject: 'Order details',
+                // text: 'Test mail from e-Pharma',
+                template:'invoice',
+                'v:firstName': 'Sankha',
+                'v:medList': req.body.medicine_list,
+                'v:full_amount': req.body.full_amount,
+                'v:delivery_charge': req.body.delivery_charges,  
+                'v:price': price        
+              };
+                
+              mailgun.messages().send(mailData, function (error, body) {
+                console.log(body);
+              });
+
               if (result) response(res, null, 202, "Order updated");
             })
             .catch(err => response(res, null, 500, err));
