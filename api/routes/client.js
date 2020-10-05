@@ -20,5 +20,6 @@ router.post("/edit/:id",clientHandler.editUser);
 router.get("/get/address/:id",addressHandler.getAddress);
 router.post("/addNewAddress/:id",addressHandler.addNewAddress);
 router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
+router.get("/address/getAll", addressHandler.getAllAddresses);
 
 module.exports = router;
