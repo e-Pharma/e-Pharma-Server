@@ -20,6 +20,8 @@ router.get("/get/:id",clientHandler.getUser);
 router.post("/edit/:id",clientHandler.editUser);
 router.get("/get/address/:id",addressHandler.getAddress);
 router.post("/addNewAddress/:id",addressHandler.addNewAddress);
+router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
+router.get("/address/getAll", addressHandler.getAllAddresses);
 // router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
 router.get("/get/order/:id",trackOrder.getOrder);
 router.get("/get/driver/:id",driver.getDriver); // for the order-tracking 
