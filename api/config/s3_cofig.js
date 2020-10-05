@@ -1,6 +1,6 @@
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');
-const { env_data } = require('../../api/config/data');
+const { env_data } = require("../config/data")
 var STORAGE = env_data.storage
 require('dotenv').config()
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'SriLankanOrganics'})

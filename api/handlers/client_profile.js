@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Client = require('../models/client');
+const Feedback =require("../models/feedback")
 
 const response = require("../utils/response");
 
@@ -44,6 +45,29 @@ exports.editUser=async(req,res)=>{
     }
 }
 
+
+exports.orderFeedback=(req,res)=>{
+    const docId=req.params.id;
+    console.log(docId)
+    var item = new Array();
+    console.log(req.body)
+
+    Feedback.findByIdAndUpdate(docId,
+        // {$push:{items:item}},
+        {$push:{items:req.body}},
+        {safe:true,upsert:true},
+        function(err,doc){
+            if(err){
+                console.log(err);
+                return response(res,null,500,err);
+
+            }else{
+                console.log("Successfully added");
+                return response(res, null, 200, "Success");
+            }
+        }
+        )
+}
 
 
 

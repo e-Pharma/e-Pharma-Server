@@ -9,8 +9,10 @@ const response = require("../utils/response");
 
 const Order = require("../models/order");
 const Feedback =require("../models/feedback")
+const Notification = require("../models/notification");
 const jwt = require("jsonwebtoken");
-const jwtVerify = require("../handlers/verifyJWT")
+const jwtVerify = require("../handlers/verifyJWT");
+const notification = require("../models/notification");
 
 exports.getOrders = async (req, res) => {
 
@@ -116,8 +118,19 @@ exports.addOrder = async (req, res) => {
           });
     }
 
+    notification = new Notification({
+      _id: new mongoose.Types.ObjectId,
+      name: req.body.first_name+ " "+req.body.last_name,
+      action: "placed an order at "
+    });
+
     order.save()
          .then(result => {
+          notification.save().then(res=>{
+            logger.info("Success",res)
+          }).catch(error=>{
+            logger.error(err);
+          });
           logger.info("Sucess", result);
           return response(res, result._id, 201, "Successfully Created!");
          })
@@ -233,6 +246,7 @@ exports.payOrder = async (req, res) => {
     return response(res, null, 200, "Invalid Token")
   }
 
+  /* client order feedback
   exports.orderFeedback = async(res,req) => {
       if(req&&req.params && req.params.id){
         Order.findOne({_id:req.params.id})
@@ -266,4 +280,5 @@ exports.payOrder = async (req, res) => {
     //  })
 
   }
+  */
 }
