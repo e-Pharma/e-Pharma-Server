@@ -7,7 +7,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const socketIO = require('socket.io')
 // const { export_params } = require('./api/config/s3_cofig')
-
+require("dotenv").config();
 const PORT = process.env.PORT || 3000
 connedtDB()
 // export_params.createBucket()
@@ -26,4 +26,4 @@ const server = app.listen(PORT,function(){
 
 //Socket.io
 const io = socketIO(server);
-app.set('io',io)
+app.set('io',io) 
