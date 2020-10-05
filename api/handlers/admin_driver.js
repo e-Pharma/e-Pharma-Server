@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Driver = require('../models/driver');
+const Order = require('../models/order');
 const response = require('../utils/response');
 const Logger = require("../utils/logger");
 const logger = new Logger();
@@ -59,6 +60,20 @@ exports.deleteDriver = async(req,res)=>{
     Driver.findByIdAndUpdate(req.params.id, {
         isDeleted: true
     }, (err,data)=>{
+        if(err){
+            console.log(err);
+            return response(res, null, 500, "Server Error");
+        }
+        else{
+            console.log(data);
+            return response(res, data, 200, "Success");
+        }
+    })
+}
+
+//get delivered orders
+exports.orderHistory = (req,res)=>{
+    Order.find({"driver":req.params.id}, (err,data)=>{
         if(err){
             console.log(err);
             return response(res, null, 500, "Server Error");
