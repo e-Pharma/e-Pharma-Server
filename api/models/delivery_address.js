@@ -6,8 +6,8 @@ const deliveryAddressSchema = mongoose.Schema({
     clientId:{type:String},
     items:[{
         id:mongoose.Schema.Types.ObjectId,
-        type:{type:String},
-        city:{type:String},
+        type:{type:String},//address lat 
+        city:{type:String},//address lng
         address:{type:String,required:true}
     }]
 });
