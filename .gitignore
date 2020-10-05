@@ -1,3 +1,5 @@
 node_modules
 sendgrid.env
 .env
+package-lock.json
+package.json

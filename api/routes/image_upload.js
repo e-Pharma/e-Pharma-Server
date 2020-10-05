@@ -15,9 +15,9 @@ const upload = multer({ storage: storage })
 const handler = require("../handlers/image_upload");
 router.post("/check_quality", upload.any(), handler.calculateImageQuality);
 
-// const fileuploader = require('express-fileupload')
-// router.use(fileuploader({createParentPath: true}));
-// const uploadHandler = require("../handlers/s3_bucket_upload");
-// router.post("/upload_prescription", uploadHandler.uploadPrescriptionImage);
+const fileuploader = require('express-fileupload')
+router.use(fileuploader({createParentPath: true}));
+const uploadHandler = require("../handlers/s3_bucket_upload");
+router.post("/upload_prescription", uploadHandler.uploadPrescriptionImage);
 
 module.exports = router;
