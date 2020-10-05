@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Driver = require('../models/driver');
 const Order = require("../models/order");
 const Logger = require("../utils/logger");
+const Address = require("../models/order");
 
 const logger = new Logger();
 
@@ -22,6 +23,21 @@ exports.getDriver=(req,res)=>{
         }
     })
 }
+
+//get delivery address-client
+// exports.getAddress=(req,res) => {
+//     Address.findById(req.params.id,(err,data) => {
+//         if(err){
+//             console.log(err);
+//             return response(res,null,500, "Server error");
+//         }
+//         else{
+//             console.log(data);
+//             return response(res,data,200,"Success");
+//         }
+//     })
+// }
+
 //edit driver details(name,address,contact number)
 exports.editDriver=async(req,res)=>{
     if(req && req.params && req.params.id){
@@ -74,7 +90,7 @@ exports.getPendingOrders = async (req, res) => {
     var value = req.query.value;
     console.log(typeof value);
     console.log(value);
-    Order.find({ status: "pending" })
+    Order.find({ status: "driverAssigned" }) //old status - pending
       .exec()
       .then(orders => {
         response(res, orders);
@@ -88,7 +104,7 @@ exports.getOngoingOrders = async (req, res) => {
     var value = req.query.value;
     console.log(typeof value);
     console.log(value);
-    Order.find({ status: "ongoing" })
+    Order.find({ status: "dispatched" })// old status - ongoing
       .exec()
       .then(orders => {
         response(res, orders);

@@ -5,7 +5,7 @@ const driverLogin = require("../handlers/driver_auth")
 const driverNotificationHandler = require("../handlers/driver_notification")
 const driverProfileHandler = require("../handlers/driver_profile")
 const clientOrdersHandler = require("../handlers/client_orders")
-const clientAddressHandler = require("../handlers/client_address")
+const clientAddressHandler = require("../handlers/driver_profile")
 
 router.get("/login",driverLogin.login);
 //driver details
@@ -20,7 +20,7 @@ router.get("/ongoingOrders", driverProfileHandler.getOngoingOrders);
 router.get("/completedOrders", driverProfileHandler.getCompletedOrders);
 
 //location details
-//router.get("/clientAddress", clientAddressHandler.)
+router.get("/clientAddress", clientAddressHandler.getOngoingOrders);
 
 //edit driver details
 router.post("/edit/:id", driverProfileHandler.editDriver);

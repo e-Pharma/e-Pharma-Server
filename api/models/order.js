@@ -81,7 +81,7 @@ const orderSchema = mongoose.Schema({
    1) pending - not reviewed
    2) reviewed - not paid
    3) paid - not dispached
-   4) dispached - nort delivered
+   4) dispatched - nort delivered
    5) delivered - no feedback
    6) completed - delivered
    7) rejected
