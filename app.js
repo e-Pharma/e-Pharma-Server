@@ -25,7 +25,3 @@ app.use("/",routes)
 const server = app.listen(PORT,function(){
     console.log('Server started on port 3000')
 });
-
-//Socket.io
-const io = socketIO(server);
-app.set('io',io) 

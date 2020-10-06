@@ -114,7 +114,7 @@ exports.clientLogin = async (req, res, next) => {
           }
         );
 
-        Client.findOneAndUpdate({email: req.body.email}, {$set: {isLoggedIn: true}}, (err, result) => {
+        Client.findOneAndUpdate({email: req.body.email}, {$set: {isLoggedIn: true, token: token}}, (err, result) => {
           if(err) {
             logger.error(err);
             return response(res, null, 500, "Server Error");
