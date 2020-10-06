@@ -106,13 +106,10 @@ const orderSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-<<<<<<< Updated upstream
-  feedback:{
+  feedback: {
     type:String,
     default:null},
-=======
->>>>>>> Stashed changes
-  driver:{
+  driver: {
     type:String,
     required: false
   }
