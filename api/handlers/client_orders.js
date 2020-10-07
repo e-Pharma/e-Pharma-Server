@@ -8,6 +8,7 @@ const logger = new Logger();
 const response = require("../utils/response");
 
 const Order = require("../models/order");
+const Feedback =require("../models/feedback")
 const Notification = require("../models/notification");
 const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT");
@@ -92,8 +93,8 @@ exports.addOrder = async (req, res) => {
             delivery_address: req.body.address,
             dob: req.body.dob,
             note: req.body.note,
-            // lat: req.body.lat,
-            // long: req.body.long,
+            lat: req.body.type,
+            long: req.body.city,
             prescription_url: req.body.image,
             note: req.body.note,
             nic: req.body.nic,
@@ -244,4 +245,40 @@ exports.payOrder = async (req, res) => {
     logger.error(isVerified.isTrue)
     return response(res, null, 200, "Invalid Token")
   }
+
+  /* client order feedback
+  exports.orderFeedback = async(res,req) => {
+      if(req&&req.params && req.params.id){
+        Order.findOne({_id:req.params.id})
+          .exec()
+          .then(order =>{
+            const editField={
+              feedback:req.body.feedback
+            }
+            Order.updateOne({_id:req.params.id},editField)
+              .exec()
+              .then(result=>{
+                if(result){
+                  console.log("Feedback added successfully");
+                  return response(res,result,200,"Success")
+                }
+              })
+              .catch(err=>response(res,null,500,err));
+          })
+      }else{
+        return response(res,null,400,"Client not found")
+      }
+
+    // Order.findByIdAndUpdate(req.params.id,{$set:{feedback:req.body.feedback}},(err)=>{
+    //   if (err) {
+    //     console.log(err)
+    //     return response(res, null, 500, "Server Error")
+    //   } else {
+    //     console.log("Success")
+    //     return response(res, null, 200, "Success")
+    //   }
+    //  })
+
+  }
+  */
 }

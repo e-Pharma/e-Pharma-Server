@@ -9,7 +9,7 @@ const URI = "mongodb+srv://sankhaJ:sankha@appledore-nbptw.mongodb.net/e-Pharma?r
 
 const connectDB = async () => {
     await mongoose
-        .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+        .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
         .then(() => console.log("connected to the cluster"))
         .catch(err => response(res, null, 500, err));
 

@@ -3,3 +3,5 @@ sendgrid.env
 .env
 package-lock.json
 package.json
+app.js
+api/hadlers/s3_bucket_upload.js

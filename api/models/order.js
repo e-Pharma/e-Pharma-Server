@@ -107,7 +107,10 @@ const orderSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  driver:{
+  feedback: {
+    type:String,
+    default:null},
+  driver: {
     type:String,
     required: false
   }

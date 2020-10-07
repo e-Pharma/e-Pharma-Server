@@ -6,14 +6,15 @@ const Address = require('../models/delivery_address');
 const Client =require('../models/client')
 const jwt = require("jsonwebtoken");
 const jwtVerify = require("../handlers/verifyJWT")
+const Logger = require("../utils/logger");
+const logger = new Logger();
 
 exports.getAddress=(req,res)=>{
-    // const token = req.headers['authorization'].slice(6);
-    // const isVerified = jwtVerify.verifyJWT(token);
-    // if(isVerified.isTrue) {
-    //     const clientId = isVerified.data.id;
-    Address.findById(req.params.id,(err,data)=>{
-            // {clientId:clientId}
+    const token = req.headers['authorization'].slice(6);
+    const isVerified = jwtVerify.verifyJWT(token);
+    console.log(isVerified.data.id)
+    if(isVerified.isTrue){
+        Address.find({clientId: isVerified.data.id}, (err,data)=>{
             if(err){
                 console.log(err);
                 return response(res,null,500,err);
@@ -23,20 +24,37 @@ exports.getAddress=(req,res)=>{
                 return response(res, data.items, 200, "Success");
             }
         })
-    // }else {
-    //     // logger.error(isVerified.isTrue);
-    //     return response(res, null, 400, "Bad Request");
-    //   }
+    } else {
+        logger.error("Error", isVerified)
+        return response(res, null, 400, "Bad Request!")
+    }
+    // // if(isVerified.isTrue) {
+    // //     const clientId = isVerified.data.id;
+    // Address.findById(req.params.id,(err,data)=>{
+    //         // {clientId:clientId}
+    //         if(err){
+    //             console.log(err);
+    //             return response(res,null,500,err);
+    //         }
+    //         else{
+    //             console.log(data);
+    //             return response(res, data.items, 200, "Success");
+    //         }
+    //     })
+    // // }else {
+    // //     // logger.error(isVerified.isTrue);
+    // //     return response(res, null, 400, "Bad Request");
+    // //   }
 }
 
 exports.getAllAddresses = (req, res) => {
     const token = req.headers['authorization'].slice(6);
+    console.log("TOK"+token)
     const isVerified = jwtVerify.verifyJWT(token);
     if(isVerified.isTrue) {
         const clientId = isVerified.data.id;
         console.log("CLIENT:"+clientId)
         Address.findOne({ clientId: clientId },(err,data)=>{
-            
             if(err){
                 console.log(err);
                 return response(res,null,500,err);
@@ -100,4 +118,16 @@ exports.deleteAddress=(req,res)=>{
             }
         }
     )
+}
+
+exports.deleteAll = async(req, res)=>{
+    Address.deleteMany({},(err,res1)=>{
+        if(err){
+            logger.error(err)
+            return response(res, null, 500, "Server Error")
+        } else {
+            logger.info(res1)
+            return response(res, res1, 200, "Success")
+        }
+    })
 }
