@@ -64,3 +64,50 @@ exports.login = async (req, res, next) => {
         return response(res, null, 500, err);
       });
   }; 
+
+  exports.passwordUpdate = async (req, res) => {
+    if (req) {
+      logger.info("Password update request for", req.params.officer_id);
+  
+      Admin.findOne({ user_name: 'admin' })
+        .exec()
+        .then(user => {
+          if (!!user) {
+            bcrypt.compare(req.body.old_pass, user.password, (err, result) => {
+              if (err) {
+                logger.error(err);
+                return response(res, null, 401, "Invalid password");
+              }
+  
+              if (!result) return response(res, null, 401, "Invalid password");
+              bcrypt.hash(req.body.new_pass, 10, (err, hash) => {
+                if (err) {
+                  logger.error(err);
+                  return response(res, null, 500, err);
+                }
+                const updateDoc = {
+                  password: hash
+                };
+  
+                Admin.updateOne(
+                  { user_name: 'admin' },
+                  updateDoc
+                )
+                  .exec()
+                  .then(result => {
+                    if (result) {
+                      response(res, null, 202, "Password updated");
+                    }
+                  })
+                  .catch(err => response(res, null, 500, err));
+              });
+            });
+          } else {
+            response(res, null, 404, "Invalid id");
+          }
+        })
+        .catch(err => response(res, null, 500, err));
+    } else {
+      response(res, null, 404, "id not found");
+    }
+  };
