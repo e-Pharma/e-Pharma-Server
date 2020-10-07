@@ -130,9 +130,9 @@ exports.clientLogin = async (req, res, next) => {
             first_name: client[0].first_name,
           },
           env_data.JWT_SECRET,
-          {
-            expiresIn: "1h"
-          }
+          // {
+          //   expiresIn: "1h"
+          // }
         );
 
         Client.findOneAndUpdate({email: req.body.email}, {$set: {isLoggedIn: true, token: token}}, (err, result) => {
