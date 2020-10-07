@@ -23,6 +23,10 @@ const clientSchema = mongoose.Schema({
   contact_number: {
     type: String,
   },
+  token: {
+    type: String,
+    default: null
+  },
   nic: {
     type: String
   },

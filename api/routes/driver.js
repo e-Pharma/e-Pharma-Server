@@ -18,6 +18,8 @@ router.get("/pendingOrders", driverProfileHandler.getPendingOrders);
 router.get("/ongoingOrders", driverProfileHandler.getOngoingOrders);
 //order details - completed
 router.get("/completedOrders", driverProfileHandler.getCompletedOrders);
+//order details - delivered
+router.get("/deliveredOrders", driverProfileHandler.getDeliveredOrders);
 
 //location details
 router.get("/clientAddress", clientAddressHandler.getOngoingOrders);
