@@ -111,6 +111,20 @@ exports.getCompletedOrders = async (req, res) => {
       .catch(err => response(res, null, 500, err));
 };
 
+//retrieve delivered orders
+exports.getDeliveredOrders = async (req, res) => {
+    var value = req.query.value;
+    console.log(typeof value);
+    console.log(value);
+    Order.find({ status: "delivered" })
+      .exec()
+      .then(orders => {
+        response(res, orders);
+        console.log(orders);
+      })
+      .catch(err => response(res, null, 500, err));
+};
+
 //update the pending order status
 exports.editOrderStatus=async(req,res)=>{
     if(req && req.params && req.params.id){
