@@ -211,7 +211,7 @@ exports.cancelOrder = async (req, res) => {
   const isVerified = jwtVerify.verifyJWT(token);
   console.log(isVerified)
   if (isVerified.isTrue) {
-    Order.findByIdAndUpdate(req.params.id, { $set: { status: 'rejected'}}, (err, order) => {
+    Order.findByIdAndUpdate(req.params.id, { $set: { status: 'cancelled'}}, (err, order) => {
       if (err) {
         logger.error(err)
         return response(res, null, 500, "Server Error")

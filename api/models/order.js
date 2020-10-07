@@ -86,6 +86,7 @@ const orderSchema = mongoose.Schema({
    6) delivered - delivery completed
    7) feedback - feedback on progress
    8) rejected
+   9) cancelled - Cancel the order
 
   */
 
