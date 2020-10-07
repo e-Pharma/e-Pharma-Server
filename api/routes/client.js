@@ -28,5 +28,5 @@ router.get("/address/getAll", addressHandler.getAllAddresses);
 router.get("/get/order/:id",trackOrder.getOrder);
 router.get("/get/driver/:id",driver.getDriver); // for the order-tracking 
 router.post("/feedback/:id",clientHandler.orderFeedback);
-
+router.post("/sendMail",clientHandler.sendInquiery)
 module.exports = router;

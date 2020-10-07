@@ -114,6 +114,7 @@ exports.addNewAddress=(req,res)=>{
                     })
             }
         })
+        
     } else {
         logger.error("Error", isVerified)
         return response(res, null, 400, "Bad Request!")

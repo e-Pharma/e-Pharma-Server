@@ -2,8 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Client = require('../models/client');
 const Feedback =require("../models/feedback")
-
+const nodemailer =require('nodemailer');
+const mailgun =require('nodemailer-mailgun-transport')
 const response = require("../utils/response");
+const apiKeys =require("../api keys/mailgun");
 
 //get user details
 exports.getUser=(req,res)=>{
@@ -67,6 +69,39 @@ exports.orderFeedback=(req,res)=>{
             }
         }
         )
+}
+
+exports.sendInquiery=(req,res)=>{
+    const auth ={
+        api_key :apiKeys.api_key,
+        domain:apiKeys.domain
+    }
+
+    // const transporter =nodemailer.createTransport(mailgun(auth));
+    const transporter =nodemailer.createTransport({
+        service:'gmail',
+        auth:{
+            user:'thilini96ucsc@gmail.com',
+            pass:'t@ucsc96'
+        }
+    });
+
+    const mailOptions ={
+        from:'thilini96ucsc@gmail.com',
+        to:'thilinihk96@gmail.com',
+        subject:'e-Pharma test',
+        text:`Hello Thilini testing nodemailer`
+    };
+
+    transporter.sendMail(mailOptions,(err,info)=>{
+        if(err){
+            console.log('error sending mail',err);
+        }else{
+            console.log('Email sent',info.response)
+        }
+
+    })
+
 }
 
 
