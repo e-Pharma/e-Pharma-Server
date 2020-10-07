@@ -6,6 +6,7 @@ const clientHandler = require('../handlers/admin_client');
 const adminLogin = require("../handlers/admin_auth");
 const driverHandler = require('../handlers/admin_driver');
 const dashboardHandler =  require('../handlers/admin_dashboard');
+const feedbackHandler = require('../handlers/admin_feedback');
 
 //ADMIN ORDER
 router.get("/orders", handler.getOrders);
@@ -36,5 +37,8 @@ router.get("/totalOrdersCount", dashboardHandler.getTotalOrders);
 router.get("/completedOrdersCount", dashboardHandler.getCompletedOrders);
 router.get("/rejectedOrdersCount", dashboardHandler.getRejectedOrders);
 router.get("/totalClientsCount", dashboardHandler.getTotalClients);
+
+//ADMIN ORDER FEEDBACK
+router.get("/orderFeedback/:id", feedbackHandler.orderFeedback);
 
 module.exports = router;
