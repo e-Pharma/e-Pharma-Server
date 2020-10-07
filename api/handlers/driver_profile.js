@@ -22,6 +22,21 @@ exports.getDriver=(req,res)=>{
         }
     })
 }
+
+//get order details
+exports.getOrder=(req,res)=>{
+    Order.findById(req.params.id,(err,data)=>{
+        if(err){
+            console.log(err);
+            return response(res, null, 500, "Server Error");
+        }
+        else{
+            console.log(data);
+            return response(res, data, 200, "Success");
+        }
+    })
+}
+
 //edit driver details(name,address,contact number)
 exports.editDriver=async(req,res)=>{
     if(req && req.params && req.params.id){
@@ -155,3 +170,37 @@ exports.editOrderStatus=async(req,res)=>{
         return response(res,null,400,"Order not available")
     }
 }
+
+//update the latitude of driver
+exports.updateLocation=async(req,res)=>{
+    if(req && req.params && req.params.id){
+        console.log(req.body.lat),
+        console.log(req.body.long),
+        
+    Driver.findOne({_id:req.params.id})
+        .exec()
+        .then(order=>{
+            if(order){
+                const editFields={
+                    lat:req.body.lat,
+                    long:req.body.long
+                }
+                Order.updateOne({_id:req.params.id},editFields)
+                    .exec()
+                    .then(result=>{
+                        if(result){
+                            console.log("Location updated");
+                            return response(res, result, 202, "Success");  
+                        }
+                     })
+                     .catch(err => response(res, null, 500, err));
+            }else{
+                response(res, null, 404, "Invalid driver id");
+            }
+           
+        }).catch(err=>response(res,null,500,err));
+    }else{
+        return response(res,null,400,"Driver not available")
+    }
+}
+

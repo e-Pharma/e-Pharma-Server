@@ -9,6 +9,8 @@ const clientOrdersHandler = require("../handlers/client_orders")
 router.get("/login",driverLogin.login);
 //driver details
 router.get("/get/:id", driverProfileHandler.getDriver);
+//order details
+router.get("/order/:id", driverProfileHandler.getOrder);
 //notifications to driver 
 router.get("/notifications", driverNotificationHandler.viewNotifications);
 //order details - pending
@@ -25,7 +27,8 @@ router.post("/edit/:id", driverProfileHandler.editDriver);
 
 //update the order status
 router.post("/updateOrderStatus/:id", driverProfileHandler.editOrderStatus);
-
+//update driver location
+router.post("/updateLocation/:id", driverProfileHandler.updateLocation);
 
 
 module.exports = router;
