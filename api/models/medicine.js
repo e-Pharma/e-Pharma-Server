@@ -12,10 +12,12 @@ const medicineSchema = mongoose.Schema({
   },
   quantity:{
     type: String,
+    default: "50"
   },
   is_available: {
     type: Boolean,
-    required: true
+    required: true,
+    default: true
   },
   
 });
