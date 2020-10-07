@@ -106,10 +106,10 @@ const orderSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  feedback:{
+  feedback: {
     type:String,
     default:null},
-  driver:{
+  driver: {
     type:String,
     required: false
   }

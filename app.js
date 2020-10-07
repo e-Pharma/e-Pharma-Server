@@ -28,5 +28,5 @@ const server = app.listen(PORT,function(){
 });
 
 //Socket.io
-const io = socketIO(server);
+const io = socketIO(server)
 app.set('io',io)
