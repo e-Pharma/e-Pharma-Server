@@ -35,14 +35,14 @@ exports.getAllAddresses = (req, res) => {
     if(isVerified.isTrue) {
         const clientId = isVerified.data.id;
         console.log("CLIENT:"+clientId)
-        Address.find({ clientId: clientId },(err,data)=>{
-            console.log("ERROR:"+data)
+        Address.findOne({ clientId: clientId },(err,data)=>{
+            
             if(err){
                 console.log(err);
                 return response(res,null,500,err);
             }
             else{
-                console.log(data);
+                console.log("DATA:"+data)
                 return response(res, data.items, 200, "Success");
             }
         });
@@ -54,19 +54,14 @@ exports.getAllAddresses = (req, res) => {
 
 /*add new address to the address book*/
 exports.addNewAddress=(req,res)=>{
-    // const token = req.headers['authorization'].slice(6);
-    // const isVerified = jwtVerify.verifyJWT(token);
+    /** Do not change. */
+    const token = req.headers['authorization'].slice(6);
+    const isVerified = jwtVerify.verifyJWT(token);
 
-    // if(isVerified.isTrue){
-
-/*find by ducument id and update and push item in array*/
-    const docId=req.params.id;
-    console.log(docId)
-    //console.log(req.body.items)
-    var item=new Array();
+    if(isVerified.isTrue){
      console.log(req.body)
 
-    Address.findByIdAndUpdate(docId,
+     Address.findOneAndUpdate({clientId: isVerified.data.id},
         // {$push:{items:item}},
         {$push:{items:req.body}},
        
@@ -82,6 +77,10 @@ exports.addNewAddress=(req,res)=>{
             }
         }
         )
+    } else {
+        console.log(err);
+        return response(res,null,400,"Invalid Request");
+    }
 
 }
 
