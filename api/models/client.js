@@ -39,7 +39,7 @@ const clientSchema = mongoose.Schema({
   },
   is_verified: {
     type: Boolean,
-    default: false
+    default: true
   },
   is_token_exired: {
     type: Boolean,

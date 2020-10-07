@@ -19,7 +19,7 @@ router.put('/order/pay_order/:id', handler.payOrder);
 
 router.get("/get/:id",clientHandler.getUser);
 router.post("/edit/:id",clientHandler.editUser);
-// router.get("/get/address",addressHandler.getAllAddresses);
+// router.get("/get/address/:id",addressHandler.getAddress);
 router.post("/addNewAddress",addressHandler.addNewAddress);
 router.delete("/address-book/delete/:id",addressHandler.deleteAddress);
 router.delete("/address/deleteAll", addressHandler.deleteAll)
