@@ -60,9 +60,9 @@ exports.clientReg = async (req, res, next) => {
                   first_name: result.first_name,
                 },
                 env_data.JWT_SECRET,
-                {
-                  expiresIn: "1h"
-                }
+                // {
+                //   expiresIn: "1h"
+                // }
               );
 
               return response(res, token, 201, "User created");
