@@ -10,7 +10,7 @@ exports.calculateImageQuality = async (req, res, next) => {
         var buffer = Buffer.from(data)
         const brisqueValue = parseFloat(buffer.toString());
         console.log(brisqueValue)
-        if(brisqueValue < 30) return response(res, {isQuality: true}, 200, "Success");
+        if(brisqueValue < 50) return response(res, {isQuality: true}, 200, "Success");
         else return response(res, {isQuality: false}, 200, "Success")
     });
     // console.log("jcn"+req.files);

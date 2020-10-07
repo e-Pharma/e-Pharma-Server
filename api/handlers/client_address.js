@@ -61,7 +61,10 @@ exports.getAllAddresses = (req, res) => {
             }
             else{
                 console.log("DATA:"+data)
-                return response(res, data.items, 200, "Success");
+                if(data === null)
+                    return response(res, undefined, 200, "Success");
+                else
+                    return response(res, data.items, 200, "Success");
             }
         });
     }else {
