@@ -82,6 +82,11 @@ const clientSchema = mongoose.Schema({
     },
     gender:{
       type:String
+    },
+    email:{
+      type: String,
+      required: true,
+      default: null
     }
   }]
 });

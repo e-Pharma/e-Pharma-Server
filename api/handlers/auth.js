@@ -28,6 +28,27 @@ exports.clientReg = async (req, res, next) => {
     .then(client => {
       if (client.length > 0)
         return response(res, null, 409, "User already registered");
+      else{
+        Client.find({}, (err, clients)=>{
+          console.log(clients)
+          if(err){
+            logger.error(err);
+            return response(res, null, 500, err);   
+          } else {
+            var clientsArray = new Array();
+            var relations = new Array();
+            clientsArray = clients;
+            for(let client of clients) {
+              relations = client.relations;
+              for(let relation of relations){
+                if(relation.email !== req.body.email && relation.nic === req.body.nic){
+                  return response(res, null, 200, "Duplicate User!")
+                }
+              }
+            }
+          }
+        })
+      }
         bcrypt.hash(req.body.password, 10, (err, hash) => {
 
         if (err) {
@@ -319,43 +340,53 @@ exports.addRelationship = async (req, res) => {
         console.log(clienId);
         Client.find({ nic: req.body.relations.nic })
               .exec()
-              .then(client => {
-                if(client.length >0) {
+              .then(clients => {
+                console.log(clients.length)
+                if(clients.length>0 && (clients[0].email !== req.body.relations.email)) {
                   return response(res, null , 200, "User Exists!");
                 } else {
-                  Client.findById(clienId,(err, client) => {
-                    if(err) {
-                      logger.error(err);
-                      return response(res, null, 500, "Server Error");
+                  Client.find({email: req.body.relations.email}, (err, result)=>{
+                    if(err){
+                      logger.error(err)
+                      return response(res, null, 500, "Server Error!")
+                    } else if(result.length>0){
+                        return response(res, null, 200, 'User Exists!')
                     } else {
-                        var relationsArray = new Array();
-                        var isPresent = false;
-                        console.log(client)
-                        relationsArray = client.relations;
-                        for(let relations of relationsArray){
-                          if(relations.nic === req.body.relations.nic) {
-                            isPresent = true;
-                            break;
-                          }
-                        }
-                        if(!isPresent) {
-                          relationsArray.push(req.body.relations);
-                          console.log(relationsArray)
-                          Client.findOneAndUpdate({_id: clienId}, {$set: {relations: relationsArray}}, (err, result) => {
-                            if(err) {
-                              logger.error(err);
-                              return response(res, null, 500, "Server Error");
-                            } else {
-                                logger.info("Success", result);
-                                return response(res, null, 201, "Success");
-                            }
-                          });
-                        } else {
+                      Client.findById(clienId,(err, client) => {
+                        if(err) {
                           logger.error(err);
-                          return response(res, null, 200, "User Exists!");
-                        }
-                      }
-                  });
+                          return response(res, null, 500, "Server Error");
+                        } else {
+                            var relationsArray = new Array();
+                            var isPresent = false;
+                            //console.log(client)
+                            relationsArray = client.relations;
+                            for(let relations of relationsArray){
+                              if(relations.nic === req.body.relations.nic) {
+                                isPresent = true;
+                                break;
+                              }
+                            }
+                            if(!isPresent) {
+                              relationsArray.push(req.body.relations);
+                              console.log(relationsArray)
+                              Client.findOneAndUpdate({_id: clienId}, {$set: {relations: relationsArray}}, (err, result) => {
+                                if(err) {
+                                  logger.error(err);
+                                  return response(res, null, 500, "Server Error");
+                                } else {
+                                    logger.info("Success", result);
+                                    return response(res, null, 201, "Success");
+                                }
+                              });
+                            } else {
+                              logger.error(err);
+                              return response(res, null, 200, "User Exists!");
+                            }
+                          }
+                      });
+                    }
+                  })
                 }
               })
   } else {

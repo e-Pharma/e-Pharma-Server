@@ -16,33 +16,33 @@ const notification = require("../models/notification");
 
 exports.getOrders = async (req, res) => {
 
-    Order.find({}, (err, orders) => {
-        if(err) {
-          logger.error(err);
-          return response(res, null, 500, err);
-        } else {
-          logger.info("Success", orders);
-          return response(res, orders, 200, "Success");
-        }
-      });
+    // Order.find({clientId}, (err, orders) => {
+    //     if(err) {
+    //       logger.error(err);
+    //       return response(res, null, 500, err);
+    //     } else {
+    //       logger.info("Success", orders);
+    //       return response(res, orders, 200, "Success");
+    //     }
+    //   });
 
-//   const token = req.headers['authorization'].slice(6);
-//   const isVerified = jwtVerify.verifyJWT(token);
-//   if(isVerified.isTrue) {
-//     const clientId = isVerified.data.id;
-//     Order.find({ clientId: clientId}, (err, orders) => {
-//       if(err) {
-//         logger.error(err);
-//         return response(res, null, 500, err);
-//       } else {
-//         logger.info("Success", orders);
-//         return response(res, orders, 200, "Success");
-//       }
-//     });
-//   } else {
-//     logger.error(isVerified.isTrue);
-//     return response(res, null, 400, "Bad Request");
-//   }
+  const token = req.headers['authorization'].slice(6);
+  const isVerified = jwtVerify.verifyJWT(token);
+  if(isVerified.isTrue) {
+    const clientId = isVerified.data.id;
+    Order.find({ clientId: clientId}, (err, orders) => {
+      if(err) {
+        logger.error(err);
+        return response(res, null, 500, err);
+      } else {
+        logger.info("Success", orders);
+        return response(res, orders, 200, "Success");
+      }
+    });
+  } else {
+    logger.error(isVerified.isTrue);
+    return response(res, null, 400, "Bad Request");
+  }
 };
 
 exports.getOrder = async (req, res) => {
@@ -244,6 +244,15 @@ exports.payOrder = async (req, res) => {
   } else {
     logger.error(isVerified.isTrue)
     return response(res, null, 200, "Invalid Token")
+  }
+
+  exports.deleteAllOrders = async(req, res) => {
+    Order.findOneAndDelete({ clientId: req.params.id }, (err, res) => {
+      if(err) logger.error(err)
+      else{
+        return response(res, null, 200, "Success")
+      }
+    })
   }
 
   /* client order feedback
