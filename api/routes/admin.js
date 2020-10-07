@@ -14,7 +14,7 @@ router.get("/order/:id",handler.getOrder);
 // router.get("/order/get/:value",handler.getOrder);
 router.post("/updateOrder/:id",handler.updateOrder);
 router.post("/updateOrderWithDriver/:id",handler.updateOrderWithDriver); 
-
+router.post("/updatePassword",adminLogin.passwordUpdate);
 //ADMIN LOGIN
 router.get("/login",adminLogin.login);
 

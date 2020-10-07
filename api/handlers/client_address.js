@@ -55,13 +55,12 @@ exports.getAllAddresses = (req, res) => {
         const clientId = isVerified.data.id;
         console.log("CLIENT:"+clientId)
         Address.findOne({ clientId: clientId },(err,data)=>{
-            console.log("Data:"+data)
             if(err){
                 console.log(err);
                 return response(res,null,500,err);
             }
             else{
-                console.log(data);
+                console.log("DATA:"+data)
                 return response(res, data.items, 200, "Success");
             }
         });
@@ -73,52 +72,34 @@ exports.getAllAddresses = (req, res) => {
 
 /*add new address to the address book*/
 exports.addNewAddress=(req,res)=>{
-    console.log("==========================")
+    /** Do not change. */
     const token = req.headers['authorization'].slice(6);
     const isVerified = jwtVerify.verifyJWT(token);
-    console.log("ID:"+isVerified.data.id)
+
     if(isVerified.isTrue){
-        Address.find({clientId: isVerified.data.id})
-        .exec()
-        .then(address=>{
-            if(address.length>0){
-                console.log(address.length)
-                Address.findOneAndUpdate({clientId: isVerified.data.id}, {$push: { items: req.body }}, {useFindAndModify: false}, (err, data) => {
-                 if(err){
-                     logger.error("Error:",err);
-                     return response(res, null, 500, "Server Error")
-                 } else {
-                     logger.info("Success:", data)
-                     return response(res, null, 201, "Successfully added!")
-                 }
-                })
-            } else {
-             const address = new Address({
-                 _id: new mongoose.Types.ObjectId,
-                 clientId: isVerified.data.id,
-                 items: [{
-                     type: req.body[0].type,
-                     city: req.body[0].city,
-                     address: req.body[0].address
-                 }]
-             });
- 
-             address.save()
-                    .then((data)=>{
-                        logger.info("Saved:", data)
-                        return response(res, null, 201, "Successfully Created!")
-                    })
-                    .catch(err=>{
-                        logger.error("Error:", err)
-                        return response(res, null, 500, "Server Error")
-                    })
+     console.log(req.body)
+
+     Address.findOneAndUpdate({clientId: isVerified.data.id},
+        // {$push:{items:item}},
+        {$push:{items:req.body}},
+       
+        {safe:true,upsert:true},
+        function(err,doc){
+            if(err){
+                console.log(err);
+                return response(res,null,500,err);
+
+            }else{
+                console.log("Successfully added");
+                return response(res, null, 200, "Success");
             }
-        })
-        
+        }
+        )
     } else {
-        logger.error("Error", isVerified)
-        return response(res, null, 400, "Bad Request!")
+        console.log(err);
+        return response(res,null,400,"Invalid Request");
     }
+
 }
 
 exports.deleteAddress=(req,res)=>{
