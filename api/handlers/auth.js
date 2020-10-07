@@ -23,7 +23,7 @@ const Client = require("../models/client");
 **/
 exports.clientReg = async (req, res, next) => {
   console.log(req.body)
-  Client.find({ email: req.body.email })
+  Client.find({ email: req.body.email, nic: req.body.nic })
     .exec()
     .then(client => {
       if (client.length > 0)
@@ -317,27 +317,47 @@ exports.addRelationship = async (req, res) => {
     logger.info("Success", isVerified);
         const clienId = isVerified.data.id;
         console.log(clienId);
-        Client.findById(clienId,(err, client) => {
-          if(err) {
-            logger.error(err);
-            return response(res, null, 500, "Server Error");
-          } else {
-            var relationsArray = new Array();
-            console.log(client)
-            relationsArray = client.relations;
-            relationsArray.push(req.body.relations);
-            console.log(relationsArray)
-            Client.findOneAndUpdate({_id: clienId}, {$set: {relations: relationsArray}}, (err, result) => {
-              if(err) {
-                logger.error(err);
-                return response(res, null, 500, "Server Error");
-              } else {
-                logger.info("Success", result);
-                return response(res, null, 201, "Success");
-              }
-            });
-          }
-        });
+        Client.find({ nic: req.body.relations.nic })
+              .exec()
+              .then(client => {
+                if(client.length >0) {
+                  return response(res, null , 200, "User Exists!");
+                } else {
+                  Client.findById(clienId,(err, client) => {
+                    if(err) {
+                      logger.error(err);
+                      return response(res, null, 500, "Server Error");
+                    } else {
+                        var relationsArray = new Array();
+                        var isPresent = false;
+                        console.log(client)
+                        relationsArray = client.relations;
+                        for(let relations of relationsArray){
+                          if(relations.nic === req.body.relations.nic) {
+                            isPresent = true;
+                            break;
+                          }
+                        }
+                        if(!isPresent) {
+                          relationsArray.push(req.body.relations);
+                          console.log(relationsArray)
+                          Client.findOneAndUpdate({_id: clienId}, {$set: {relations: relationsArray}}, (err, result) => {
+                            if(err) {
+                              logger.error(err);
+                              return response(res, null, 500, "Server Error");
+                            } else {
+                                logger.info("Success", result);
+                                return response(res, null, 201, "Success");
+                            }
+                          });
+                        } else {
+                          logger.error(err);
+                          return response(res, null, 200, "User Exists!");
+                        }
+                      }
+                  });
+                }
+              })
   } else {
     logger.error(isVerified.isTrue);
     Client.findOneAndUpdate({_id: isVerified.data.id }, {$set: {is_token_expired: true}}, (err, result) => {
