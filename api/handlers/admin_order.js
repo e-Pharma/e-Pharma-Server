@@ -31,7 +31,7 @@ exports.getOrders = async (req, res) => {
   console.log(value);
   var val = "delivered"
   if(value=="completed"){
-    Order.find({ status: value , status:"delivered"})
+    Order.find({ $or: [ { status:value }, { status: "delivered" } ] })
     .exec()
     .then(orders => {
       response(res, orders);
