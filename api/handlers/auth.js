@@ -10,6 +10,7 @@ const Logger = require("../utils/logger");
 const logger = new Logger();
 
 const response = require("../utils/response");
+const verfication = require("./verification")
 
 /* User authentication */
 
@@ -85,7 +86,7 @@ exports.clientReg = async (req, res, next) => {
                 //   expiresIn: "1h"
                 // }
               );
-
+              // verfication.sendVerification()
               return response(res, token, 201, "User created");
             })
             .catch(error => {
@@ -318,6 +319,7 @@ exports.deleteAll = async(req, res) => {
 }
 
 exports.delete = async(req, res) => {
+  console.log(req.params.id)
   Client.deleteMany({_id: req.params.id }, (err, result) => {
     if(err) {
       logger.error(err)
