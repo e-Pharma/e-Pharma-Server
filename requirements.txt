@@ -16,7 +16,7 @@ kiwisolver==1.2.0
 libsvm==3.23.0.4
 matplotlib==3.2.1
 networkx==2.4
-numpy==1.18.5
+numpy==1.22.0
 Pillow==7.1.2
 PyAudio==0.2.11
 pycparser==2.20
